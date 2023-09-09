@@ -4,7 +4,7 @@
 int main(){
     int a;
     int b;
-    std::cout << "Введите границы" << std::endl;
+    std::cout << "Enter borders" << std::endl;
     std::cin >> a >> b;
     if (std::cin.fail()) {
         std::cerr << "Incorrect values" << std::endl;
