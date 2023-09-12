@@ -1,13 +1,13 @@
 #include <iostream>
 #pragma once
-int calculate(int a, int b){
+int calculate(int leftborder, int rightborder){
     
-    int res = 0;
-    for (int i {a}; i <= b; ++i){
-        int tmp = i;
-        while (tmp > 0){
-            res += tmp % 2;
-            tmp = tmp / 2;
+    int res  {0};
+    for (int i {leftborder}; i <= rightborder; ++i){
+        int num = i;
+        while (num > 0){
+            res += num % 2;
+            num = num / 2;
 
         }
         
