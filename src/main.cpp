@@ -10,9 +10,7 @@ int main(){
         std::cerr << "Incorrect values" << std::endl;
         return 1;
     }
-    else{
         int res = calculate(leftborder,rightborder);
         std::cout << res << std::endl;
-    }
     
 }
