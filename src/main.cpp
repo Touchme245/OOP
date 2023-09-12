@@ -2,15 +2,16 @@
 #include "calculate.h"
 
 int main(){
-    int a;
-    int b;
+    int leftborder;
+    int rightborder;
     std::cout << "Enter borders" << std::endl;
-    std::cin >> a >> b;
+    std::cin >> leftborder >> rightborder;
     if (std::cin.fail()) {
         std::cerr << "Incorrect values" << std::endl;
+        return 1;
     }
     else{
-        int res = calculate(a,b);
+        int res = calculate(leftborder,rightborder);
         std::cout << res << std::endl;
     }
     
