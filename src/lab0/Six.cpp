@@ -163,7 +163,7 @@ bool Six::equals(const Six &other) const{
 
 }
 
-bool Six::operator>(const Six &other) const{
+bool Six::greaterThan(const Six &other) const{
     if (_size > other._size){
         return true;
     }
@@ -182,7 +182,7 @@ bool Six::operator>(const Six &other) const{
     return false;
 }
 
-bool Six::operator<(const Six &other) const{
+bool Six::lessThan(const Six &other) const{
     if (_size < other._size){
         return true;
     }
@@ -212,8 +212,63 @@ std::ostream &Six::print(std::ostream &os){
     return os;
 }
 
+Six Six::operator +(const Six& other) {
+    return add(other);
+};
+
+Six Six::operator -(const Six& other) {
+    return remove(other);
+}
+
+bool Six::operator ==(const Six& other) const {
+    return equals(other);
+}
+
+bool Six::operator >(const Six& other) const {
+    return greaterThan(other);
+}
+
+bool Six::operator <(const Six& other) const {
+    return lessThan(other);
+}
+
+Six & Six::operator =(const Six& other){
+    if (_array != nullptr){
+        delete[] _array;
+        _array = nullptr;
+    }
+    _size = other._size;
+    _array = new unsigned char[_size];
+    for (long long i = 0; i < _size; ++i){
+        _array[i] = other._array[i];
+    }
+    return * this;
+}
+
+Six & Six::operator =(Six&& other){
+    if (_array != nullptr){
+        delete[] _array;
+    }
+    _size = other._size;
+    _array = other._array;
+    other._size = 0;
+    other._array=nullptr;
+    return *this;
+}
+
+std::ostream &operator <<(std::ostream& os, Six& object) {
+    return object.print(os);
+}
+
+std::istream &operator >>(std::istream& is, Six& object) {
+    std::string buffer;
+    is >> buffer;
+    object = Six(buffer);
+    return is;
+}
+
 Six::~Six() noexcept{
-    //std::cout << "Deleting six obj" << "\n";
+    std::cout << "Deleting six obj" << "\n";
     if (_size >0){
         _size = 0;
         delete[] _array;
