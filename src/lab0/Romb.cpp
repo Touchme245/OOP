@@ -4,10 +4,12 @@
 
 Romb::Romb(){
     points = new Point[4];
+    figureName = "Romb";
 }
 
 Romb::Romb(const Point* points){
     this->points = new Point[4];
+    figureName = "Romb";
     for (int i =0; i < 4; ++i){
         this->points[i] = points[i];
     }
@@ -62,8 +64,13 @@ Romb::operator double() const{
 }
 
 Romb& Romb::operator=(const Romb& other){
+    delete[] points;
+    
     points = new Point[4];
-    fillPoints(4,points,other.points);
+    for (int i = 0; i < 4; ++i){
+        points[i] = other.points[i];
+    }
+    // fillPoints(4,points,other.points);
     return *this;
 }
 

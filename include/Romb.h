@@ -14,8 +14,6 @@ class Romb: public Figure{
 
         virtual std::ostream& print(std::ostream& os) const override;
         virtual std::istream& read(std::istream& is) override;
-        //std::string getFigureName() const;
-        // Point* getPoints() const;
 
         virtual operator double() const override;
         virtual Point center() const override;
@@ -30,7 +28,6 @@ class Romb: public Figure{
         virtual Figure& operator=(const Figure& other) override;
         virtual bool operator==(const Figure& other) override;
     private:
-        std::string figureName = "Romb";
         virtual void fillPoints(const int pointsAmount,Point* res,const Point* data) override;
 };
 

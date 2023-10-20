@@ -31,7 +31,7 @@ class Pentagon : public Figure{
         virtual bool operator==(const Figure& other) override;
 
     private:
-        std::string figureName = "Pentagon";
+        // std::string figureName = "Pentagon";
         void fillPoints(const int pointsAmount,Point* res,const Point* data) override;
 };
 std::ostream& operator<<(std::ostream& os, const Pentagon& figure);

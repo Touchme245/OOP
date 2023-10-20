@@ -18,9 +18,6 @@ class Trap : public Figure{
         static Trap create(const Point* points);
 
         virtual ~Trap() = default;
-
-        //std::string getFigureName() const;
-        // Point* getPoints() const override;
         
         operator double() const override final;
         Point center() const override final; 
@@ -35,7 +32,6 @@ class Trap : public Figure{
 
 
      private:
-        std::string figureName = "Trap";
         void fillPoints(const int pointsAmount,Point* res,const Point* data) override final;
 };
 

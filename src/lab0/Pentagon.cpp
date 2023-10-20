@@ -5,11 +5,16 @@
 
 Pentagon::Pentagon(){
     points = new Point[5];
+    figureName = "Pentagon";
 }
 
+// std::string Pentagon::getFigureName() const{
+//     return figu
+// }
 
 Pentagon::Pentagon(const Point* points){
     this->points = new Point[5];
+    figureName = "Pentagon";
     for (int i = 0; i < 5; ++i){
         this->points[i] = points[i];
     }
@@ -25,7 +30,10 @@ Figure* Pentagon::create(const Point* points){
 
 Pentagon::Pentagon(const Pentagon& other){
     points = new Point[5];
-    fillPoints(5,points, other.points);
+    for (int i = 0; i < 5; ++i){
+        this->points[i] = other.points[i];
+    }
+    //fillPoints(5,points, other.points);
 }
 
 Pentagon::Pentagon(Pentagon&& other){
@@ -36,8 +44,12 @@ Pentagon::Pentagon(Pentagon&& other){
 }
 
 Pentagon& Pentagon::operator=(Pentagon& other){
+    delete[] points;
     points = new Point[5];
-    fillPoints(5,points,other.points);
+    for (int i = 0; i < 5; ++i){
+        points[i] = other.points[i];
+    }
+    // fillPoints(5,points,other.points);
     return *this;
 }
 
@@ -45,6 +57,7 @@ Pentagon& Pentagon::operator=(Pentagon&& other){
     points = other.points;
     delete[] other.points;
     other.points=nullptr;
+    return *this;
 }
 
 bool Pentagon::operator==(Pentagon& other){
@@ -97,13 +110,13 @@ bool Pentagon::operator==(const Figure& other){
 Point Pentagon::center()const{
     double Xsum = 0;
     double Ysum = 0;
-    for(int i = 0; i < 4; ++i){
+    for(int i = 0; i < 5; ++i){
         Xsum += points[i].getX();
         Ysum += points[i].getY();
     }
     Point center;
-    center.setX(Xsum / 4); 
-    center.setY(Ysum / 4);
+    center.setX(Xsum / 5); 
+    center.setY(Ysum / 5);
 
     return center;
 

@@ -89,9 +89,6 @@ bool isParalel(const Point& p1, const Point& p2){
     return false;
 }
 
-Point intersection(const Point& p1, const Point& p2, const Point& p3, const Point& p4){
-
-}
 
 std::ostream& operator<<(std::ostream& os, const Point& p){
     os << p.x << " " << p.y;

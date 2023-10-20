@@ -5,6 +5,7 @@
 
 
 Trap::Trap(){
+    figureName = "Trap";
     points = new Point[4];
 }
 //Figure*
@@ -15,7 +16,7 @@ Trap Trap::create(const Point* points){
 
 
 Trap::Trap(const Point* points){
-    
+    figureName = "Trap";
     this->points = new Point[4];
     for (int i = 0; i < 4; ++i){
         this->points[i] = points[i];
