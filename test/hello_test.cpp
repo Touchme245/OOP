@@ -1,462 +1,276 @@
 #include <gtest/gtest.h>
-#include "Six.h"
-#include "SixBuilder.h"
+#include "Point.h"
+#include "Trap.h"
+#include "Romb.h"
+#include "Pentagon.h"
+#include "ArrayValidation.h"
 
-TEST(DefaultConstructor, BasicAssertions) {
-  // arrange 
-  // через билдер не создать arr -> null лол
+
+TEST(TrapPointConstructor, BasicAssertions) {
+    // arrange 
+    Point* TrapPoints = new Point[4];
+    TrapPoints[0] = Point{0,0};
+    TrapPoints[1] = Point{7,0};
+    TrapPoints[2] = Point{2,3};
+    TrapPoints[3] = Point{6,3};
  
-  int expectedSize = 0;
-  
-  // act
-  Six obj {};
-  int size = obj.getSize();
-  unsigned char* array = obj.getArray();
+    // act
+    Trap trap{TrapPoints};
 
-  // assert
-  EXPECT_EQ(size, expectedSize);
-  EXPECT_EQ(array, nullptr);
+    // assert
+    bool res = validateArray(TrapPoints, trap.getPoints(), 4);
+    EXPECT_EQ(res, true);
 }
 
-TEST(FillConstructor, BasicAssertions) {
-  // arrange 
-  int n = 5;
-  char val = '0';
-  int expectedSize = 5;
-  unsigned char expectedArray[] = "00000";
-  Six expectedObj = SixBuilder().size(expectedSize).data(expectedArray).build();
-
-  // act
-  Six obj(n, val);
-  int size = obj.getSize();
-  unsigned char* array = obj.getArray();
-
-  // assert
-  EXPECT_EQ(size, expectedObj.getSize());
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedObj.getArray()[i]);
-  }
-  
-}
-
-TEST(FillConstructorValueExeption, BasicAssertions) {
-  // arrange 
-  int n = 5;
-  char val = 'k';
-  // assert
-  EXPECT_THROW(Six obj(n, val);, std::invalid_argument);
-
-}
-
-TEST(ListConstructor, BasicAssertions) {
-  // arrange 
-  
-  unsigned char expectedArray[] = "5555";
-  int expectedSize = 4;
-  Six expectedObj = SixBuilder().size(expectedSize).data(expectedArray).build();
-  // act
-  Six obj {'5', '5', '5', '5'};
-  
-
-  // assert
-  int size = obj.getSize();
-  unsigned char* array = obj.getArray();
-
-  EXPECT_EQ(size, expectedSize);
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedArray[i]);
-  }
-}
-
-TEST(ListConstructorValueExeption, BasicAssertions) {
-  // arrange 
-  int n = 5;
-  
-  // assert
-  EXPECT_THROW(Six obj('k','k');, std::invalid_argument);
-
-}
-
-TEST(StringConstructor, BasicAssertions) {
-  // arrange 
-  unsigned char expectedArray[] = "5555";
-  int expectedSize = 4;
-  Six expectedObj = SixBuilder().size(expectedSize).data(expectedArray).build();
-
-  // act
-  Six obj {"5555"};
-
-  // assert
-  int size = obj.getSize();
-  unsigned char* array = obj.getArray();
-  EXPECT_EQ(size, expectedObj.getSize());
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedObj.getArray()[i]);
-  }
-}
-
-TEST(StringConstructorValueExeption, BasicAssertions) {
-  // arrange 
-  int n = 5;
-  
-  // assert
-  EXPECT_THROW(Six obj{"kj"};, std::invalid_argument);
-
-}
-
-TEST(CopyConstructor, BasicAssertions) {
-  // arrange 
-  unsigned char expectedArray[] = "2222";
-  int expectedSize = 4;
-  Six parentObj = SixBuilder().size(expectedSize).data(expectedArray).build();
-
-  // act
-  Six obj {parentObj};
-  int size = obj.getSize();
-  
-  // assert
-  EXPECT_EQ(size, parentObj.getSize());
-  
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(obj.getArray()[i], parentObj.getArray()[i]);
-  }
-}
-
-TEST(MoveConstructor, BasicAssertions) {
-  // arrange 
-  unsigned char expectedArray[] = "1111";
-  int expectedSize = 4;
-  Six parentObj = SixBuilder().size(expectedSize).data(expectedArray).build();
-  // act
-  Six obj(std::move(parentObj));
-  int size = obj.getSize();
-  unsigned char* array = obj.getArray();
-
-  // assert
-  EXPECT_EQ(size, expectedSize);
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedArray[i]);
-  }
-}
-
-TEST(addOperation1, BasicAssertions) {
-  // arrange 
-  int firstSize = 4;
-  int secondSize = 4;
-  unsigned char firstArr[] = "1111";
-  unsigned char secondArr[] = "1111";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
-  unsigned char expectedArray[] = "2222";
-  int expectedSize = 4;
-  // act
-  Six res{first.add(second)};
-  int size = res.getSize();
-  unsigned char* array = res.getArray();
-
-  // assert
-  EXPECT_EQ(size, expectedSize);
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedArray[i]);
-  }
-}
-
-TEST(addOperation2, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 5;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "12345";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
-  unsigned char expectedArray[] = "43152";
-  int expectedSize = 5;
-  // act
-   Six res{first.add(second)};
-  int size = res.getSize();
-  unsigned char* array = res.getArray();
-
-  // assert
-  EXPECT_EQ(size, expectedSize);
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedArray[i]);
-  }
-}
-
-
-
-TEST(RemoveOperation1, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 5;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "12345";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
+TEST(TrapFabric, BasicAssertions) {
+    // arrange 
+    Point* TrapPoints = new Point[4];
+    TrapPoints[0] = Point{0,0};
+    TrapPoints[1] = Point{7,0};
+    TrapPoints[2] = Point{2,3};
+    TrapPoints[3] = Point{6,3};
  
-  unsigned char expectedArray[] = "0";
-  int expectedSize = 1;
-  // act
-   Six res{first.remove(second)};
-  int size = res.getSize();
-  unsigned char* array = res.getArray();
-  std::cout << size << "\n";
+    // act
+    Trap trap = Trap::create(TrapPoints);
 
-  // assert
-  EXPECT_EQ(size, expectedSize);
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedArray[i]);
-  }
+    // assert
+    bool res = validateArray(TrapPoints, trap.getPoints(), 4);
+    EXPECT_EQ(res, true);
 }
 
-TEST(RemoveOperation2, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 4;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "1234";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
-  unsigned char expectedArray[] = "11111";
-  int expectedSize = 5;
-  // act
-  Six res{first.remove(second)};
-  int size = res.getSize();
-  unsigned char* array = res.getArray();
-  
 
-  // assert
-  EXPECT_EQ(size, expectedSize);
-  for (int i =0; i < size; ++i){
-    EXPECT_EQ(array[i], expectedArray[i]);
-  }
-}
 
-TEST(RemoveOperationLogicExeption, BasicAssertions) {
-  // arrange 
-  int n = 5;
-  int firstSize = 5;
-  int secondSize = 4;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "1234";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
-  // assert
-  EXPECT_THROW(second.remove(first);, std::logic_error);
+TEST(TrapOppositesSidesArentParralelValueExeption, BasicAssertions) {
+    // arrange 
+    Point* TrapPoints = new Point[4];
+    TrapPoints[0] = Point{2,4};
+    TrapPoints[1] = Point{4,8};
+    TrapPoints[2] = Point{2,3};
+    TrapPoints[3] = Point{6,3};
+
+    // assert
+    EXPECT_THROW(Trap trap{TrapPoints};, std::invalid_argument);
 
 }
 
-TEST(Equals, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 5;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "12345";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
+TEST(TrapSideZeroLenValueExeption, BasicAssertions) {
+    // arrange 
+    Point* TrapPoints = new Point[4];
+    TrapPoints[0] = Point{2,2};
+    TrapPoints[1] = Point{2,2};
+    TrapPoints[2] = Point{2,3};
+    TrapPoints[3] = Point{6,3};
+
+    // assert
+    EXPECT_THROW(Trap trap{TrapPoints};, std::invalid_argument);
+
+}
+
+TEST(TrapCenterConstructor, BasicAssertions) {
+    // arrange 
+    Point* TrapPoints = new Point[4];
+    TrapPoints[0] = Point{0,0};
+    TrapPoints[1] = Point{7,0};
+    TrapPoints[2] = Point{2,3};
+    TrapPoints[3] = Point{6,3};
+    Trap trap{TrapPoints};
+    Point expectedCenter = Point{3.75, 1.5};
+    // act
+    Point center = trap.center();
+
+    // assert
+   EXPECT_DOUBLE_EQ(center.getX(), expectedCenter.getX());
+   EXPECT_DOUBLE_EQ(center.getY(), expectedCenter.getY());
+}
+
+TEST(TrapSquareConstructor, BasicAssertions) {
+    // arrange 
+    Point* TrapPoints = new Point[4];
+    TrapPoints[0] = Point{0,0};
+    TrapPoints[1] = Point{7,0};
+    TrapPoints[2] = Point{2,3};
+    TrapPoints[3] = Point{6,3};
+    Trap trap{TrapPoints};
+    double expectedSquare = 4.5;
+    // act
+    
+    double square = (double) trap;
+
+    // assert
+    EXPECT_DOUBLE_EQ(square, expectedSquare);
+}
+
+TEST(RombPointConstructor, BasicAssertions) {
+    // arrange 
+    Point* Rombpoints = new Point[4];
+    Rombpoints[0] = Point{0,0};
+    Rombpoints[1] = Point{2,0};
+    Rombpoints[2] = Point{2,2};
+    Rombpoints[3] = Point{0,2};
+
+    
  
-  // act
- bool res = first.equals(second);
-  
-  // assert
-  EXPECT_EQ(res, 1);
-  
+    // act
+    Romb romb{Rombpoints};
+    bool res = validateArray(Rombpoints, romb.getPoints(), 4);
+    // assert
+    
+    EXPECT_EQ(res, true);
 }
 
-TEST(Equals2, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 4;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "1245";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
+TEST(RombNeighboursSidesAreParralelValueExeption, BasicAssertions) {
+    // arrange 
+    Point* RombPoints = new Point[4];
+    RombPoints[0] = Point{2,4};
+    RombPoints[1] = Point{4,8};
+    RombPoints[2] = Point{2,3};
+    RombPoints[3] = Point{6,3};
+
+    // assert
+    EXPECT_THROW(Romb romb{RombPoints};, std::invalid_argument);
+
+}
+
+TEST(RombSideZeroLengthValueExeption, BasicAssertions) {
+    // arrange 
+    Point* RombPoints = new Point[4];
+    RombPoints[0] = Point{2,5};
+    RombPoints[1] = Point{2,5};
+    RombPoints[2] = Point{2,3};
+    RombPoints[3] = Point{6,3};
+
+    // assert
+    EXPECT_THROW(Romb romb{RombPoints};, std::invalid_argument);
+
+}
+
+TEST(RombOppositeSidesArentParalelValueExeption, BasicAssertions) {
+    // arrange 
+    Point* RombPoints = new Point[4];
+    RombPoints[0] = Point{2,6};
+    RombPoints[1] = Point{13,4};
+    RombPoints[2] = Point{9,11};
+    RombPoints[3] = Point{37,2};
+
+    // assert
+    EXPECT_THROW(Romb romb{RombPoints};, std::invalid_argument);
+
+}
+
+TEST(RombCenter, BasicAssertions) {
+    // arrange 
+    Point* Rombpoints = new Point[4];
+    Rombpoints[0] = Point{0,0};
+    Rombpoints[1] = Point{2,0};
+    Rombpoints[2] = Point{2,2};
+    Rombpoints[3] = Point{0,2};
+    Romb romb{Rombpoints};
+    Point expectedCenter = Point{1,1};
+    // act
+    
+    Point center = romb.center();
+    // assert
+    
+    EXPECT_DOUBLE_EQ(center.getX(), expectedCenter.getX());
+    EXPECT_DOUBLE_EQ(center.getY(), expectedCenter.getY());
+}
+
+TEST(RombSquare, BasicAssertions) {
+    // arrange 
+    Point* Rombpoints = new Point[4];
+    Rombpoints[0] = Point{0,0};
+    Rombpoints[1] = Point{2,0};
+    Rombpoints[2] = Point{2,2};
+    Rombpoints[3] = Point{0,2};
+    double expectedSquare = 4;
+    // act
+    Romb romb{Rombpoints};
+    double square = (double) romb;
+    // assert
+    
+   EXPECT_DOUBLE_EQ(square, expectedSquare);
+}
+
+TEST(PentagonPointConstructor, BasicAssertions) {
+    // arrange 
+    Point* PentagonPoints = new Point[5];
+    PentagonPoints[0] = Point{0,0};
+    PentagonPoints[1] = Point{2,0};
+    PentagonPoints[2] = Point{22,4};
+    PentagonPoints[3] = Point{3,12};
+    PentagonPoints[4] = Point{5,8};
  
-  // act
- bool res = first.equals(second);
-  
+    // act
+    Pentagon pentagon{PentagonPoints};
 
-  // assert
-  EXPECT_EQ(res, 0);
-  
+    // assert
+    bool res = validateArray(PentagonPoints, pentagon.getPoints(), 5);
+    EXPECT_EQ(res, true);
 }
 
-TEST(OperatorGreter1, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 4;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "1235";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first.greaterThan(second);
-  
-  // assert
-  EXPECT_EQ(res, 1);
-  
+TEST(PentagonSideZeroLengthValueExeption, BasicAssertions) {
+    // arrange 
+    Point* PentagonPoints = new Point[5];
+    PentagonPoints[0] = Point{0,0};
+    PentagonPoints[1] = Point{2,2};
+    PentagonPoints[2] = Point{2,2};
+    PentagonPoints[3] = Point{3,12};
+    PentagonPoints[4] = Point{5,8};
+
+    // assert
+    EXPECT_THROW(Pentagon pentagon{PentagonPoints};, std::invalid_argument);
+
 }
 
-TEST(OperatorGreter2, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 6;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "123555";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first.greaterThan(second);
-  
+TEST(PentagonNeigboursSidesAreParelelValueExeption, BasicAssertions) {
+    // arrange 
+    Point* PentagonPoints = new Point[5];
+    PentagonPoints[0] = Point{1,1};
+    PentagonPoints[1] = Point{2,2};
+    PentagonPoints[2] = Point{3,3};
+    PentagonPoints[3] = Point{4,4};
+    PentagonPoints[4] = Point{5,8};
 
-  // assert
-  EXPECT_EQ(res, 0);
-  
+    // assert
+    EXPECT_THROW(Pentagon pentagon{PentagonPoints};, std::invalid_argument);
+
 }
 
-TEST(OperatorLower, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 6;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "123555";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first.lessThan(second);
-  
-
-  // assert
-  EXPECT_EQ(res, 1);
-  
+TEST(PentagonCenter, BasicAssertions) {
+    // arrange 
+    Point* PentagonPoints = new Point[5];
+    PentagonPoints[0] = Point{0,0};
+    PentagonPoints[1] = Point{2,0};
+    PentagonPoints[2] = Point{22,4};
+    PentagonPoints[3] = Point{3,12};
+    PentagonPoints[4] = Point{5,8};
+    Pentagon pentagon{PentagonPoints};
+    Point expectedCenter = Point{6.75, 4};
+    // act
+    
+    Point center = pentagon.center();
+    // assert
+    
+    EXPECT_DOUBLE_EQ(center.getX(), expectedCenter.getX());
+    EXPECT_DOUBLE_EQ(center.getY(), expectedCenter.getY());
 }
 
-TEST(OperatorLower2, BasicAssertions) {
-  // arrange 
-  int firstSize = 9;
-  int secondSize = 6;
-  unsigned char firstArr[] = "123434345";
-  unsigned char secondArr[] = "123555";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first.lessThan(second);
-  
-
-  // assert
-  EXPECT_EQ(res, 0);
-  
+TEST(PentagonSquare, BasicAssertions) {
+    // arrange 
+    Point* PentagonPoints = new Point[5];
+    PentagonPoints[0] = Point{0,0};
+    PentagonPoints[1] = Point{2,0};
+    PentagonPoints[2] = Point{22,4};
+    PentagonPoints[3] = Point{3,12};
+    PentagonPoints[4] = Point{5,8};
+    Pentagon pentagon{PentagonPoints};
+    double expectedSquare = 112;
+    // act
+    
+    double square = (double) pentagon;
+    // assert
+    
+    EXPECT_DOUBLE_EQ(square, expectedSquare);
 }
 
-TEST(Greater1, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 6;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "123555";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first > second;
-  
 
-  // assert
-  EXPECT_EQ(res, 0);
-  
-}
-
-TEST(Greater2, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 6;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "123555";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = second > first;
-  
-
-  // assert
-  EXPECT_EQ(res, 1);
-  
-}
-
-TEST(lower1, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 6;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "123555";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first < second;
-  
-
-  // assert
-  EXPECT_EQ(res, 1);
-  
-}
-
-TEST(equality1, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 6;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "123555";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first == second;
-  
-
-  // assert
-  EXPECT_EQ(res, 0);
-  
-}
-
-TEST(equality2, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  int secondSize = 5;
-  unsigned char firstArr[] = "12345";
-  unsigned char secondArr[] = "12345";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  Six second = SixBuilder().size(secondSize).data(secondArr).build();
- 
-  // act
- bool res = first == second;
-  
-
-  // assert
-  EXPECT_EQ(res, 1);
-  
-}
-
-TEST(assignment, BasicAssertions) {
-  // arrange 
-  int firstSize = 5;
-  unsigned char firstArr[] = "12345";
-  Six first = SixBuilder().size(firstSize).data(firstArr).build();
-  
- 
-  // act
-  Six res = first;
-  
-
-  // assert
-  EXPECT_EQ(res.getSize(), firstSize);
-  for (int i = 0; i < firstSize; ++i){
-     EXPECT_EQ(res.getArray()[i], first.getArray()[i]);
-  }
-  
-}

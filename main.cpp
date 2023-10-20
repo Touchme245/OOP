@@ -1,38 +1,52 @@
 #include <iostream>
-#include "Six.h"
-#include "SixBuilder.h"
-
-
+#include "Trap.h"
+#include "Point.h"
+#include "Figure.h"
+#include "Romb.h"
+#include "Pentagon.h"
+#include "FigureList.h"
 int main(){
+    
+    // Point* TrapPoints = new Point[4];
+    // TrapPoints[0] = Point{0,0};
+    // TrapPoints[1] = Point{7,0};
+    // TrapPoints[2] = Point{2,3};
+    // TrapPoints[3] = Point{6,3};
+    // std::cout << "hi" << "\n";
+    
+    // Trap trap{TrapPoints};
+    // std::cout << "center: " << trap.center() << std::endl;
+    // std::cout << "square " << (double) trap << std::endl;
+    // std::cout << trap;
+    // std::cout << "hi" << "\n";
+    // Point* Rombpoints = new Point[4];
+    // Rombpoints[0] = Point{0,0};
+    // Rombpoints[1] = Point{2,0};
+    // Rombpoints[2] = Point{2,2};
+    // Rombpoints[3] = Point{0,2};
 
-    Six first;
-    first.print(std::cout) << std::endl;
+    // Romb romb{Rombpoints};
+    // std::cout << "center: " << romb.center() << std::endl;
+    // std::cout << "square " << (double) romb << std::endl;
+    // std::cout << romb;
 
-    Six second {'5', '5', '5', '5'};
-    second.print(std::cout) << std::endl;
-    Six third {"5555"};
-    third.print(std::cout) << std::endl;
-    Six forth {third};
-    forth.print(std::cout) << std::endl;
-    std::cout << third.equals(forth) << "\n";
-    std::cout << third.operator<(second) << "\n";
-    std::cout << third.operator>(second) << "\n";
-    std::cout << third.operator>(forth) << "\n";
-    std::cout << third.operator<(forth) << "\n";
-    Six reslt  {second.remove(third)};
-    reslt.print(std::cout) << std::endl;
-    size_t n = 20;
-    Six fifth(n, '0');
-    fifth.print(std::cout) << "\n";
+    // std::cout << "hi" << "\n";
+     Point* PentagonPoints = new Point[5];
+   PentagonPoints[0] = Point{0,0};
+    PentagonPoints[1] = Point{2,0};
+    PentagonPoints[2] = Point{22,4};
+    PentagonPoints[3] = Point{3,12};
+    PentagonPoints[4] = Point{5,8};
+//     Pentagon pentagon{PentagonPoints};
+//     std::cout << "center: " << pentagon.center() << std::endl;
+//     std::cout << "square " << (double) pentagon << std::endl;
+//     std::cout << pentagon;
 
-    Six res {second.add(third)};
-    res.print(std::cout) << "\n";
-    Six result {third.add(second)};
-    result.print(std::cout) << "\n";
-    // unsigned char arr[] = "555";
-    // Six test {SixBuilder().size(3).data(arr).build()};
-    // test.print(std::cout) << "\n";
-    // Six re(std::move(second));
-    // re.print(std::cout) << "\n";
+    FigureList list;
+    Figure* pentagon = Pentagon::create(PentagonPoints);
+    list.push_back(pentagon);
+    list.push_back(pentagon);
 
+    std::cout << list.getElem(0)->getFigureName() << "\n";
+    
 }
