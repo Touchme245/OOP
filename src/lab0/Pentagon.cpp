@@ -1,70 +1,71 @@
 #include "Pentagon.h"
 #include "Point.h"
 #include "ValidationCompositor.h"
+#include <memory>
 
 
-Pentagon::Pentagon(){
-    points = new Point[5];
-    figureName = "Pentagon";
+template<class T> Pentagon<T>::Pentagon(){
+    this->points =std::shared_ptr<Point<T>>(new Point<T>[5]);
+    this->figureName = "Pentagon";
 }
 
 // std::string Pentagon::getFigureName() const{
 //     return figu
 // }
 
-Pentagon::Pentagon(const Point* points){
-    this->points = new Point[5];
-    figureName = "Pentagon";
+template<class T> Pentagon<T>::Pentagon(const std::shared_ptr<Point<T>> points){
+    this->points =std::shared_ptr<Point<T>>(new Point<T>[5]);
+    this->figureName = "Pentagon";
     for (int i = 0; i < 5; ++i){
-        this->points[i] = points[i];
+        this->points.get()[i] = points.get()[i];
     }
-    ValidationCompositor validator;
-    validator.validate(dynamic_cast<Figure&>(*this));
-    // fillPoints(5, this->points, points);
+    //ValidationCompositor validator;
+    //validator.validate(dynamic_cast<Figure&>(*this));
+    
 
 }
 
-Figure* Pentagon::create(const Point* points){
-    return dynamic_cast<Figure*>(new Pentagon(points));
+template<class T> Pentagon<T> Pentagon<T>::create(const std::shared_ptr<Point<T>> points){
+    return Pentagon<T>{points};
 }
 
-Pentagon::Pentagon(const Pentagon& other){
-    points = new Point[5];
+template<class T> Pentagon<T>::Pentagon(const Pentagon<T>& other){
+   this->points =std::shared_ptr<Point<T>>(new Point<T>[5]);
     for (int i = 0; i < 5; ++i){
-        this->points[i] = other.points[i];
+        this->points.get()[i] = other.points.get()[i];
     }
     //fillPoints(5,points, other.points);
 }
 
-Pentagon::Pentagon(Pentagon&& other){
-    points = other.points;
-    delete[] other.points;
-    other.points = nullptr;
+template<class T> Pentagon<T>::Pentagon(Pentagon<T>&& other){
+    this->points = other.points;
+    // delete[] other.points;
+    // other.points = nullptr;
 
 }
 
-Pentagon& Pentagon::operator=(Pentagon& other){
-    delete[] points;
-    points = new Point[5];
+template<class T> Pentagon<T>& Pentagon<T>::operator=(Pentagon<T>& other){
+    //delete[] points;
+   this->points =std::shared_ptr<Point<T>>(new Point<T>[5]);
     for (int i = 0; i < 5; ++i){
-        points[i] = other.points[i];
+        this->points.get()[i] = other.points.get()[i];
     }
     // fillPoints(5,points,other.points);
     return *this;
 }
 
-Pentagon& Pentagon::operator=(Pentagon&& other){
-    points = other.points;
-    delete[] other.points;
-    other.points=nullptr;
+template<class T> Pentagon<T>& Pentagon<T>::operator=(Pentagon<T>&& other){
+    this->points = other.points;
+    // delete[] other.points;
+    // other.points=nullptr;
     return *this;
 }
 
-bool Pentagon::operator==(Pentagon& other){
+template<class T> bool Pentagon<T>::operator==(Pentagon<T>& other){
     for (int i = 0; i < 5; ++i){
         int flag = 0;
         for (int j =0; j < 5; ++j){
-            if ((points[i].getX() == other.points[i].getX()) && (points[i].getY() == other.points[i].getY())){
+            if ((this->points.get()[i].getX() == other.points.get()[i].getX()) && (this->points.get()[i].getY() == other.points.get()[i].getY())){
                 flag = 1;
             }
         }
@@ -75,31 +76,31 @@ bool Pentagon::operator==(Pentagon& other){
     return true;
 }
 
-Figure& Pentagon::operator=(const Figure&& other){
+template<class T> Figure<T>& Pentagon<T>::operator=(const Figure<T>&& other){
     try{
-        const Pentagon&& other_pentagon = dynamic_cast<const Pentagon&&>(other);
+        const Pentagon<T>&& other_pentagon = dynamic_cast<const Pentagon<T>&&>(other);
         return *this = other_pentagon;
     }
     catch(const std::bad_cast &e){
-        throw std::invalid_argument("exepted Trap");
+        throw std::invalid_argument("exepted Pentagon");
 
     }
     
 }
-Figure& Pentagon::operator=(const Figure& other){
+template<class T> Figure<T>& Pentagon<T>::operator=(const Figure<T>& other){
     try{
-        const Pentagon& other_pentagon = dynamic_cast<const Pentagon&>(other);
+        const Pentagon<T>& other_pentagon = dynamic_cast<const Pentagon<T>&>(other);
         return *this = other_pentagon;
     }
     catch(const std::bad_cast &e){
-        throw std::invalid_argument("exepted Trap");
+        throw std::invalid_argument("exepted Pentagon");
 
     }
 }
 
-bool Pentagon::operator==(const Figure& other){
+template<class T> bool Pentagon<T>::operator==(const Figure<T>& other){
     try{
-        const Pentagon& other_pentagon = dynamic_cast<const Pentagon&>(other);
+        const Pentagon<T>& other_pentagon = dynamic_cast<const Pentagon<T>&>(other);
         return *this== other_pentagon;
     }
     catch(const std::bad_cast &e){
@@ -107,14 +108,14 @@ bool Pentagon::operator==(const Figure& other){
     }
 }
 
-Point Pentagon::center()const{
-    double Xsum = 0;
-    double Ysum = 0;
+template<class T> Point<T> Pentagon<T>::center()const{
+    T Xsum = 0;
+    T Ysum = 0;
     for(int i = 0; i < 5; ++i){
-        Xsum += points[i].getX();
-        Ysum += points[i].getY();
+        Xsum += this->points.get()[i].getX();
+        Ysum += this->points.get()[i].getY();
     }
-    Point center;
+    Point<T> center;
     center.setX(Xsum / 5); 
     center.setY(Ysum / 5);
 
@@ -122,41 +123,40 @@ Point Pentagon::center()const{
 
 }
 
-Pentagon::operator double() const{
+template<class T> Pentagon<T>::operator double() const{
     double s = 0;
     for (int i = 0; i < 5; i++) {
-        s += points[i].getX() * points[(i + 1) % 5].getY() - points[i].getY() * points[(i + 1) % 5].getX();
+        s += this->points.get()[i].getX() * this->points.get()[(i + 1) % 5].getY() - this->points.get()[i].getY() * this->points.get()[(i + 1) % 5].getX();
     }
     return fabs(s / 2);
 }
 
 
-void Pentagon::fillPoints(const int pointsAmount,Point* res,const Point* data){
-     for (int i = 0; pointsAmount < 5; ++ i){
+template<class T>void Pentagon<T>::fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data){
+     for (int i = 0; i < 5; ++ i){
         res[i] = data[i];
     }
 }
 
 
-std::ostream& Pentagon::print(std::ostream& os) const{
+template<class T> std::ostream& Pentagon<T>::print(std::ostream& os) const{
     for (int i = 0; i < 5; ++i){
-        os << points[i] << "\n";
+        os << this->points.get()[i] << "\n";
     }
-    os << std::endl;
     return os;
     
 }
-std::istream& Pentagon::read(std::istream& is){
+template<class T> std::istream& Pentagon<T>::read(std::istream& is){
     for (int i = 0; i < 5; ++i){
-        is >> points[i];
+        is >> this->points.get()[i];
     }
     return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const Pentagon& figure){
+template<class T> std::ostream& operator<<(std::ostream& os, const Pentagon<T>& figure){
     return figure.print(std::cout);
 }
 
-std::istream& operator>>(std::istream& is, Pentagon& figure){
+template<class T> std::istream& operator>>(std::istream& is, Pentagon<T>& figure){
     return figure.read(std::cin);
 }

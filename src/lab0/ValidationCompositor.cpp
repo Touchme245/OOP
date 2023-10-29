@@ -3,28 +3,28 @@
 
 
 
-void ValidationCompositor::validate(Figure& figure) const{
-    for (VaLidationHandler* validator : validations){
+template<class T> void ValidationCompositor<T>::validate(Figure<T>& figure) const{
+    for (std::shared_ptr<VaLidationHandler<T>> validator : validations){
        // VaLidationHandler* validator = validations[i];
        
-        if (validator->isAllowed(figure)){
-            validator->validate(figure);
+        if (validator.get()->isAllowed(figure)){
+            validator.get()->validate(figure);
             return;
         }
     }
 }
 
-ValidationCompositor::ValidationCompositor(){
+template<class T> ValidationCompositor<T>::ValidationCompositor(){
     
-    validations.push_back(dynamic_cast<VaLidationHandler *>( new TrapValidationHandler()));
-    validations.push_back(dynamic_cast<VaLidationHandler *>(new RombValidationHandler()));
-    validations.push_back(dynamic_cast<VaLidationHandler *>(new PentagonValidationHandler()));
+    validations.push_back(dynamic_cast< std::shared_ptr<VaLidationHandler<T>> >( new TrapValidationHandler()));
+    validations.push_back(dynamic_cast<std::shared_ptr<VaLidationHandler<T>> >(new RombValidationHandler()));
+    validations.push_back(dynamic_cast<std::shared_ptr<VaLidationHandler<T>> >(new PentagonValidationHandler()));
     
 }
 
-ValidationCompositor::~ValidationCompositor(){
-    for (int i = 0; i < validations.size(); ++i){
-        delete validations[i];
+// ValidationCompositor::~ValidationCompositor(){
+//     for (int i = 0; i < validations.size(); ++i){
+//         delete validations[i];
         
-    }
-}
+//     }
+// }

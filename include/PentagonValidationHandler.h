@@ -1,8 +1,8 @@
 #pragma once
 #include "ValidationHandler.h"
 
-class PentagonValidationHandler: public VaLidationHandler{
+template <class T> class PentagonValidationHandler: public VaLidationHandler<T>{
     public:
-        void validate(const Figure& figure1) const  override;
-        bool isAllowed(const Figure& fugure) const override;
+        void validate(const Figure<T>& figure1) const  override;
+        bool isAllowed(const Figure<T>& fugure) const override;
 };

@@ -1,9 +1,9 @@
 #pragma once
 #include "ValidationHandler.h"
 
-class TrapValidationHandler: public VaLidationHandler{
+template <class T> class TrapValidationHandler: public VaLidationHandler<T>{
     public:
-        void validate(const Figure& figure1) const override;
-        virtual bool isAllowed(const Figure& fugure) const override;
+        void validate(const Figure<T>& figure1) const override;
+        virtual bool isAllowed(const Figure<T>& fugure) const override;
 };
 

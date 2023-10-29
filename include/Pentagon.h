@@ -1,38 +1,40 @@
 #pragma once
 #include "Figure.h"
 
-class Pentagon : public Figure{
-    friend std::ostream& operator<<(std::ostream& os, const Pentagon& figure);
-    friend std::istream& operator>>(std::istream& is, Pentagon& figure);
+template<class T> class Pentagon : public Figure<T>{
+    template <class U> friend std::ostream& operator<<(std::ostream& os, const Pentagon<U>& figure);
+    template<class U> friend std::istream& operator>>(std::istream& is, Pentagon<U>& figure);
     public:
         Pentagon();
-        Pentagon(const Point* points);
-        Pentagon(const Pentagon& other);
-        Pentagon(Pentagon&& other);
+        Pentagon(const std::shared_ptr<Point<T>> points);
+        Pentagon(const Pentagon<T>& other);
+        Pentagon(Pentagon<T>&& other);
 
         virtual ~Pentagon() = default;
 
         // std::string getFigureName() const;
         // Point* getPoints() const;
-        static Figure* create(const Point* points);
+        static Pentagon<T> create(const std::shared_ptr<Point<T>> points);
         
         virtual std::ostream& print(std::ostream& os) const override;
         virtual std::istream& read(std::istream& is) override;
 
         virtual operator double() const override;
-        virtual Point center() const override;
+        virtual Point<T> center() const override;
         
-        Pentagon& operator=(Pentagon& other);
-        Pentagon& operator=(Pentagon&& other);
-        bool operator==(Pentagon& other);
+        Pentagon<T>& operator=(Pentagon<T>& other);
+        Pentagon<T>& operator=(Pentagon<T>&& other);
+        bool operator==(Pentagon<T>& other);
 
-        virtual Figure& operator=(const Figure&& other) override;
-        virtual Figure& operator=(const Figure& other) override;
-        virtual bool operator==(const Figure& other) override;
+        virtual Figure<T>& operator=(const Figure<T>&& other) override;
+        virtual Figure<T>& operator=(const Figure<T>& other) override;
+        virtual bool operator==(const Figure<T>& other) override;
 
     private:
         // std::string figureName = "Pentagon";
-        void fillPoints(const int pointsAmount,Point* res,const Point* data) override;
+        void fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data) override;
 };
-std::ostream& operator<<(std::ostream& os, const Pentagon& figure);
-std::istream& operator>>(std::istream& is, Pentagon& figure);
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const Pentagon<T>& figure);
+template<typename T>
+std::istream& operator>>(std::istream& is, Pentagon<T>& figure);

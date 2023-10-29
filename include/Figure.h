@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include "Point.h"
+#include <memory>
 
-class Figure{
-    friend std::ostream& operator<<(std::ostream& os, const Figure& figure);
-    friend std::istream& operator>>(std::istream& is, Figure& figure);
+template <class T> class Figure{
+    template<class U> friend std::ostream& operator<<(std::ostream& os, const Figure<U>& figure);
+    template<class U> friend std::istream& operator>>(std::istream& is, Figure<U>& figure);
     protected:
     Figure();
     Figure(std::string figureName);
@@ -14,17 +15,19 @@ class Figure{
     public:
         virtual ~Figure();    
         virtual operator double() const = 0;
-        virtual Point center() const = 0;
-        virtual bool operator==(const Figure& other)=0;
-        virtual Figure& operator=(const Figure&& other)=0;
-        virtual Figure& operator=(const Figure& other)=0;
+        virtual Point<T> center() const = 0;
+        virtual bool operator==(const Figure<T>& other)=0;
+        virtual Figure<T>& operator=(const Figure<T>&& other)=0;
+        virtual Figure<T>& operator=(const Figure<T>& other)=0;
         virtual std::string getFigureName() const;
-        virtual Point* getPoints() const ;
+        virtual std::shared_ptr<Point<T>> getPoints() const ;
     protected:
         std::string figureName;
-        Point* points;
-        virtual void fillPoints(const int pointsAmount,Point* res,const Point* data) = 0;
+        std::shared_ptr<Point<T>> points;
+        virtual void fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data) = 0;
     
 };
-std::ostream& operator<<(std::ostream& os, const Figure& figure);
-std::istream& operator>>(std::istream& is, Figure& figure);
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const Figure<T>& figure);
+template<typename T>
+std::istream& operator>>(std::istream& is, Figure<T>& figure);

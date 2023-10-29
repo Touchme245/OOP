@@ -1,33 +1,33 @@
 #include "Figure.h"
 
-Figure::Figure(std::string figureName){
+template <class T> Figure<T>::Figure(std::string figureName){
     this->figureName = figureName;
 }
 
-Figure::~Figure(){
+template <class T> Figure<T>::~Figure(){
     figureName = "";
-    delete[] points;
-    points = nullptr;
+    // delete[] points;
+    // points = nullptr;
 
 }
 
-Figure::Figure(){
+template <class T> Figure<T>::Figure(){
     figureName = "";
     points = nullptr;
 }
 
-Point* Figure::getPoints() const{
+template <class T> std::shared_ptr<Point<T>> Figure<T>::getPoints() const{
     return points;
 }
 
-std::string Figure::getFigureName() const{
+template <class T> std::string Figure<T>::getFigureName() const{
     return figureName;
 }
 
-std::ostream& operator<<(std::ostream& os, const Figure& figure){
+template<class T> std::ostream& operator<<(std::ostream& os, const Figure<T>& figure){
     return figure.print(os);
 }
-std::istream& operator>>(std::istream& is, Figure& figure){
+template< class T>std::istream& operator>>(std::istream& is, Figure<T>& figure){
     return figure.read(is);
 }
 

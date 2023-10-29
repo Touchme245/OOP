@@ -1,14 +1,14 @@
 #pragma once
 #include "Figure.h"
 
-class Romb: public Figure{
-    friend std::ostream& operator<<(std::ostream& os, const Romb& figure);
-    friend std::istream& operator>>(std::istream& is, Romb& figure);
+template<class T> class Romb : public Figure<T>{
+    template<class U> friend std::ostream& operator<<(std::ostream& os, const Romb<U>& figure);
+    template<class U> friend std::istream& operator>>(std::istream& is, Romb<U>& figure);
     public:
         Romb();
-        Romb(const Point* points);
-        Romb(const Romb& other);
-        Romb(Romb&& other);
+        Romb(const std::shared_ptr<Point<T>> points);
+        Romb(const Romb<T>& other);
+        Romb(Romb<T>&& other);
 
         virtual ~Romb() = default;
 
@@ -16,20 +16,21 @@ class Romb: public Figure{
         virtual std::istream& read(std::istream& is) override;
 
         virtual operator double() const override;
-        virtual Point center() const override;
+        virtual Point<T> center() const override;
 
-        Romb& operator =(const Romb& other);
-        Romb& operator =(Romb&& other);
-        bool operator ==(Romb& other);
+        Romb<T>& operator =(const Romb<T>& other);
+        Romb<T>& operator =(Romb<T>&& other);
+        bool operator ==(Romb<T>& other);
 
         
 
-        virtual Figure& operator=(const Figure&& other) override;
-        virtual Figure& operator=(const Figure& other) override;
-        virtual bool operator==(const Figure& other) override;
+        virtual Figure<T>& operator=(const Figure<T>&& other) override;
+        virtual Figure<T>& operator=(const Figure<T>& other) override;
+        virtual bool operator==(const Figure<T>& other) override;
     private:
-        virtual void fillPoints(const int pointsAmount,Point* res,const Point* data) override;
+        virtual void fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data) override;
 };
-
-std::ostream& operator<<(std::ostream& os, const Romb& figure);
-std::istream& operator>>(std::istream& is, Romb& figure);
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const Romb<T>& figure);
+template<typename T>
+std::istream& operator>>(std::istream& is, Romb<T>& figure);

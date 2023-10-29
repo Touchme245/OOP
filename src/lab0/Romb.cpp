@@ -1,35 +1,39 @@
 #include "Romb.h"
 #include "Point.h"
 #include "ValidationCompositor.h"
+#include "Figure.h"
 
-Romb::Romb(){
-    points = new Point[4];
-    figureName = "Romb";
+template<class T> Romb<T>::Romb(){
+    this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
+    this->figureName = "Romb";
 }
 
-Romb::Romb(const Point* points){
-    this->points = new Point[4];
-    figureName = "Romb";
+template<class T> Romb<T>::Romb(const std::shared_ptr<Point<T>> points){
+    this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
+    this->figureName = "Romb";
     for (int i =0; i < 4; ++i){
-        this->points[i] = points[i];
+        this->points.get()[i] = points.get()[i];
     }
 
-    ValidationCompositor validator;
-    validator.validate(dynamic_cast<Figure &>(*this));
+    ValidationCompositor<T> validator;
+    validator.validate(dynamic_cast<Figure<T> &>(*this));
     // fillPoints(4, this->points, points);
 }
 
-Romb::Romb(const Romb& other){
-    points = new Point[4];
-    fillPoints(4, this->points, other.points);
+template<class T> Romb<T>::Romb(const Romb<T>& other){
+     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
+    for (int i = 0; i < 4; ++i){
+         this->points[i] = other.points[i];
+    }
+    //fillPoints(4, this->points, other.points);
 
 }
 
-Romb::Romb(Romb&& other){
-    points = other.points;
+template<class T> Romb<T>::Romb(Romb<T>&& other){
+     this->points = other.points;
 
-    delete[] other.points;
-    other.points = nullptr;
+    //delete[] other.points;
+    //other.points = nullptr;
 }
 
 // std::string Romb::getFigureName() const{
@@ -40,14 +44,14 @@ Romb::Romb(Romb&& other){
 //     return points;
 // }
 
-Point Romb::center()const{
-    double Xsum = 0;
-    double Ysum = 0;
+template<class T> Point<T> Romb<T>::center()const{
+    T Xsum = 0;
+    T Ysum = 0;
     for(int i = 0; i < 4; ++i){
-        Xsum += points[i].getX();
-        Ysum += points[i].getY();
+        Xsum += this->points.get()[i].getX();
+        Ysum += this->points.get()[i].getY();
     }
-    Point center;
+    Point<T> center;
     center.setX(Xsum / 4); 
     center.setY(Ysum / 4);
 
@@ -55,38 +59,38 @@ Point Romb::center()const{
 
 }
 
-Romb::operator double() const{
+template<class T> Romb<T>::operator double() const{
     double s = 0;
     for (int i = 0; i < 4; i++) {
-        s += points[i].getX() * points[(i + 1) % 4].getY() - points[i].getY() * points[(i + 1) % 4].getX();
+        s += this->points.get()[i].getX() * this->points.get()[(i + 1) % 4].getY() - this->points.get()[i].getY() * this->points.get()[(i + 1) % 4].getX();
     }
     return fabs(s / 2);
 }
 
-Romb& Romb::operator=(const Romb& other){
-    delete[] points;
+template<class T> Romb<T>& Romb<T>::operator=(const Romb<T>& other){
+   // delete[] points;
     
-    points = new Point[4];
+     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
     for (int i = 0; i < 4; ++i){
-        points[i] = other.points[i];
+        this->points.get()[i] = other.points.get()[i];
     }
     // fillPoints(4,points,other.points);
     return *this;
 }
 
-Romb& Romb::operator=(Romb&& other){
-    points = other.points;
+template<class T> Romb<T>& Romb<T>::operator=(Romb<T>&& other){
+     this->points = other.points;
 
-    delete[] other.points;
-    other.points = nullptr;
+    // delete[] other.points;
+    // other.points = nullptr;
     return *this;
 }
 
-bool Romb::operator==(Romb& other){
+template<class T> bool Romb<T>::operator==(Romb<T>& other){
     for (int i = 0; i < 4; ++i){
         int flag = 0;
         for (int j = 0; j < 4; ++j){
-            if ((points[i].getX() == other.points[i].getX()) && (points[i].getY() == other.points[i].getY())){
+            if ((this->points[i].getX() == other.points[i].getX()) && (this->points[i].getY() == other.points[i].getY())){
                 flag = 1;
             }
         }
@@ -100,59 +104,58 @@ bool Romb::operator==(Romb& other){
 
 
 
-void Romb::fillPoints(const int pointsAmount,Point* res,const Point* data){
-     for (int i = 0; pointsAmount < 4; ++ i){
+template< class T> void Romb<T>::fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data){
+     for (int i = 0; i < 4; ++ i){
         res[i] = data[i];
     }
 }
 
-std::ostream& Romb::print(std::ostream& os) const {
+template <class T> std::ostream& Romb<T>::print(std::ostream& os) const {
     for (int i = 0; i < 4; ++i){
-        os << points[i] <<  "\n";
+        os << this->points.get()[i] <<  "\n";
     }
-    os << std::endl;
     return os;
 }
-std::istream& Romb::read(std::istream& is) {
+template <class T> std::istream& Romb<T>::read(std::istream& is) {
     for (int i = 0; i < 4; ++i){
-        is >> points[i];
+        is >> this->points.get()[i];
     }
     return is;
     
 }
 
-std::ostream& operator<<(std::ostream& os, const Romb& figure){
+template <typename T> std::ostream& operator<<(std::ostream& os, const Romb<T>& figure){
     return figure.print(std::cout);
 }
-std::istream& operator>>(std::istream& is, Romb& figure){
+template <typename T > std::istream& operator>>(std::istream& is, Romb<T>& figure){
     return figure.read(std::cin);
 }
 
-Figure& Romb::operator=(const Figure&& other){
+template<class T> Figure<T>& Romb<T>::operator=(const Figure<T>&& other){
     try{
-        const Romb&& other_romb = dynamic_cast<const Romb&&>(other);
+        const Romb<T>&& other_romb = dynamic_cast<const Romb<T>&&>(other);
         return *this = other_romb;
     }
     catch(const std::bad_cast &e){
-        throw std::invalid_argument("exepted Trap");
+        throw std::invalid_argument("exepted Romb");
 
     }
     
 }
-Figure& Romb::operator=(const Figure& other){
+template<class T> Figure<T>& Romb<T>::operator=(const Figure<T>& other){
     try{
-        const Romb& other_romb = dynamic_cast<const Romb&>(other);
+        const Romb<T>& other_romb = dynamic_cast<const Romb<T>&>(other);
         return *this = other_romb;
     }
     catch(const std::bad_cast &e){
-        throw std::invalid_argument("exepted Trap");
+        throw std::invalid_argument("exepted Romb");
 
     }
 }
 
-bool Romb::operator==(const Figure& other){
+template<class T> bool Romb<T>::operator==(const Figure<T>& other){
     try{
-        const Romb& other_romb = dynamic_cast<const Romb&>(other);
+        const Romb<T>& other_romb = dynamic_cast<const Romb<T>&>(other);
         return *this== other_romb;
     }
     catch(const std::bad_cast &e){

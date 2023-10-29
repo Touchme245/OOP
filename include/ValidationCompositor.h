@@ -7,13 +7,13 @@
 #include <vector>
 
 
-class ValidationCompositor{
+template<class T>class ValidationCompositor{
     private:
-        std::vector<VaLidationHandler* > validations;
+        std::vector<std::shared_ptr<VaLidationHandler<T>>> validations;
 
     public:
     ValidationCompositor();
-    virtual ~ValidationCompositor();
-    void validate(Figure& figure) const;
+    virtual ~ValidationCompositor() = default;
+    void validate(Figure<T>& figure) const;
 
 };

@@ -1,33 +1,29 @@
 #include "FigureList.h"
 #include "Figure.h"
 
-FigureList::FigureList(){
+template<class T> FigureList<T>::FigureList(){
     size = 0;
     capacity = 10;
-    figures = new Figure*[capacity];
+    figures = std::shared_ptr<std::shared_ptr<T>> (new std::shared_ptr<T>[capacity]);
 }
 
-FigureList::~FigureList(){
+template<class T> FigureList<T>::~FigureList(){
     size = 0;
     capacity = 0;
-    for (int i = 0;i < size; ++i){
-        delete figures[i];
-    }
-    delete[] figures;
-    figures = nullptr;
+    // for (int i = 0;i < size; ++i){
+    //     delete figures[i];
+    // }
+    // delete[] figures;
+    // figures = nullptr;
 }
 
-void FigureList::push_back(Figure* figure){
+template<class T> void FigureList<T>::push_back(std::shared_ptr<T> figure){
     if (size + 2 > capacity){
         capacity *= 2;
-        Figure** newFigures = new Figure*[capacity];
+        std::shared_ptr<std::shared_ptr<T>> newFigures = std::shared_ptr<std::shared_ptr<T>> (new std::shared_ptr<T>[capacity]);;
         for (int i = 0; i < size; ++i){
             newFigures[i] = figures[i];
         }
-        for (int i = 0;i < size; ++i){
-            delete figures[i];
-        }
-        delete[] figures;
         figures = newFigures;
     }
 
@@ -35,14 +31,14 @@ void FigureList::push_back(Figure* figure){
 
 }
 
- Figure* FigureList::operator [](const int index) const{
+ template<class T> std::shared_ptr<T> FigureList<T>::operator [](const int index) const{
     if (index >= size || index < 0){
         throw std::invalid_argument("Invalid index");
     }
     return figures[index];
  }
 
-void FigureList::remove(int index){
+template<class T> void FigureList<T>::remove(int index){
     if (index >= size || index < 0){
         throw std::invalid_argument("Invalid index");
     }
@@ -53,6 +49,6 @@ void FigureList::remove(int index){
     size--;
 }
 
-int FigureList::getSize() const {
+template<class T> int FigureList<T>::getSize() const {
     return size;
 }
