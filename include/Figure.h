@@ -2,10 +2,14 @@
 #include <string>
 #include "Point.h"
 #include <memory>
+#include <concepts>
+#include "NumberConcept.h"
+// template <typename T>
+// concept Number = (std::is_default_constructible<T>::value || std::integral<T> || std::floating_point<T>);
 
-template <class T> class Figure{
-    template<class U> friend std::ostream& operator<<(std::ostream& os, const Figure<U>& figure);
-    template<class U> friend std::istream& operator>>(std::istream& is, Figure<U>& figure);
+template <Number T> class Figure{
+    template<Number U> friend std::ostream& operator<<(std::ostream& os, const Figure<U>& figure);
+    template<Number U> friend std::istream& operator>>(std::istream& is, Figure<U>& figure);
     protected:
     Figure();
     Figure(std::string figureName);
@@ -27,7 +31,7 @@ template <class T> class Figure{
         virtual void fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data) = 0;
     
 };
-template<typename T>
+template<Number T>
 std::ostream& operator<<(std::ostream& os, const Figure<T>& figure);
-template<typename T>
+template<Number T>
 std::istream& operator>>(std::istream& is, Figure<T>& figure);

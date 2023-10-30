@@ -2,13 +2,15 @@
 #include "Point.h"
 #include "ValidationCompositor.h"
 #include "Figure.h"
+#include "ValidationCompositor.cpp"
+#include "NumberConcept.h"
 
-template<class T> Romb<T>::Romb(){
+template<Number T> Romb<T>::Romb(){
     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
     this->figureName = "Romb";
 }
 
-template<class T> Romb<T>::Romb(const std::shared_ptr<Point<T>> points){
+template<Number T> Romb<T>::Romb(const std::shared_ptr<Point<T>> points){
     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
     this->figureName = "Romb";
     for (int i =0; i < 4; ++i){
@@ -20,7 +22,7 @@ template<class T> Romb<T>::Romb(const std::shared_ptr<Point<T>> points){
     // fillPoints(4, this->points, points);
 }
 
-template<class T> Romb<T>::Romb(const Romb<T>& other){
+template<Number T> Romb<T>::Romb(const Romb<T>& other){
      this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
     for (int i = 0; i < 4; ++i){
          this->points[i] = other.points[i];
@@ -29,7 +31,7 @@ template<class T> Romb<T>::Romb(const Romb<T>& other){
 
 }
 
-template<class T> Romb<T>::Romb(Romb<T>&& other){
+template<Number T> Romb<T>::Romb(Romb<T>&& other){
      this->points = other.points;
 
     //delete[] other.points;
@@ -44,7 +46,7 @@ template<class T> Romb<T>::Romb(Romb<T>&& other){
 //     return points;
 // }
 
-template<class T> Point<T> Romb<T>::center()const{
+template<Number T> Point<T> Romb<T>::center()const{
     T Xsum = 0;
     T Ysum = 0;
     for(int i = 0; i < 4; ++i){
@@ -59,7 +61,7 @@ template<class T> Point<T> Romb<T>::center()const{
 
 }
 
-template<class T> Romb<T>::operator double() const{
+template<Number T> Romb<T>::operator double() const{
     double s = 0;
     for (int i = 0; i < 4; i++) {
         s += this->points.get()[i].getX() * this->points.get()[(i + 1) % 4].getY() - this->points.get()[i].getY() * this->points.get()[(i + 1) % 4].getX();
@@ -67,7 +69,7 @@ template<class T> Romb<T>::operator double() const{
     return fabs(s / 2);
 }
 
-template<class T> Romb<T>& Romb<T>::operator=(const Romb<T>& other){
+template<Number T> Romb<T>& Romb<T>::operator=(const Romb<T>& other){
    // delete[] points;
     
      this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
@@ -78,7 +80,7 @@ template<class T> Romb<T>& Romb<T>::operator=(const Romb<T>& other){
     return *this;
 }
 
-template<class T> Romb<T>& Romb<T>::operator=(Romb<T>&& other){
+template<Number T> Romb<T>& Romb<T>::operator=(Romb<T>&& other){
      this->points = other.points;
 
     // delete[] other.points;
@@ -86,7 +88,7 @@ template<class T> Romb<T>& Romb<T>::operator=(Romb<T>&& other){
     return *this;
 }
 
-template<class T> bool Romb<T>::operator==(Romb<T>& other){
+template<Number T> bool Romb<T>::operator==(Romb<T>& other){
     for (int i = 0; i < 4; ++i){
         int flag = 0;
         for (int j = 0; j < 4; ++j){
@@ -104,19 +106,19 @@ template<class T> bool Romb<T>::operator==(Romb<T>& other){
 
 
 
-template< class T> void Romb<T>::fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data){
+template< Number T> void Romb<T>::fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data){
      for (int i = 0; i < 4; ++ i){
         res[i] = data[i];
     }
 }
 
-template <class T> std::ostream& Romb<T>::print(std::ostream& os) const {
+template <Number T> std::ostream& Romb<T>::print(std::ostream& os) const {
     for (int i = 0; i < 4; ++i){
         os << this->points.get()[i] <<  "\n";
     }
     return os;
 }
-template <class T> std::istream& Romb<T>::read(std::istream& is) {
+template <Number T> std::istream& Romb<T>::read(std::istream& is) {
     for (int i = 0; i < 4; ++i){
         is >> this->points.get()[i];
     }
@@ -124,14 +126,14 @@ template <class T> std::istream& Romb<T>::read(std::istream& is) {
     
 }
 
-template <typename T> std::ostream& operator<<(std::ostream& os, const Romb<T>& figure){
+template <Number T> std::ostream& operator<<(std::ostream& os, const Romb<T>& figure){
     return figure.print(std::cout);
 }
-template <typename T > std::istream& operator>>(std::istream& is, Romb<T>& figure){
+template <Number T > std::istream& operator>>(std::istream& is, Romb<T>& figure){
     return figure.read(std::cin);
 }
 
-template<class T> Figure<T>& Romb<T>::operator=(const Figure<T>&& other){
+template<Number T> Figure<T>& Romb<T>::operator=(const Figure<T>&& other){
     try{
         const Romb<T>&& other_romb = dynamic_cast<const Romb<T>&&>(other);
         return *this = other_romb;
@@ -142,7 +144,7 @@ template<class T> Figure<T>& Romb<T>::operator=(const Figure<T>&& other){
     }
     
 }
-template<class T> Figure<T>& Romb<T>::operator=(const Figure<T>& other){
+template<Number T> Figure<T>& Romb<T>::operator=(const Figure<T>& other){
     try{
         const Romb<T>& other_romb = dynamic_cast<const Romb<T>&>(other);
         return *this = other_romb;
@@ -153,7 +155,7 @@ template<class T> Figure<T>& Romb<T>::operator=(const Figure<T>& other){
     }
 }
 
-template<class T> bool Romb<T>::operator==(const Figure<T>& other){
+template<Number T> bool Romb<T>::operator==(const Figure<T>& other){
     try{
         const Romb<T>& other_romb = dynamic_cast<const Romb<T>&>(other);
         return *this== other_romb;

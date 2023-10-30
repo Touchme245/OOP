@@ -1,9 +1,10 @@
 #pragma once
 #include "Figure.h"
+#include "NumberConcept.h"
 
-template<class T> class Romb : public Figure<T>{
-    template<class U> friend std::ostream& operator<<(std::ostream& os, const Romb<U>& figure);
-    template<class U> friend std::istream& operator>>(std::istream& is, Romb<U>& figure);
+template<Number T> class Romb : public Figure<T>{
+    template<Number U> friend std::ostream& operator<<(std::ostream& os, const Romb<U>& figure);
+    template<Number U> friend std::istream& operator>>(std::istream& is, Romb<U>& figure);
     public:
         Romb();
         Romb(const std::shared_ptr<Point<T>> points);
@@ -30,7 +31,7 @@ template<class T> class Romb : public Figure<T>{
     private:
         virtual void fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data) override;
 };
-template<typename T>
+template<Number T>
 std::ostream& operator<<(std::ostream& os, const Romb<T>& figure);
-template<typename T>
+template<Number T>
 std::istream& operator>>(std::istream& is, Romb<T>& figure);

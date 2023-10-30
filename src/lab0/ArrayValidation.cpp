@@ -1,14 +1,15 @@
-// #include "Point.h"
-// #include "ArrayValidation.h"
-// bool validateArray(const Point* points1,const Point* points2, const int size){
-//     for (int i = 0; i < size; ++i){
-//         if (points1[i] != points2[i]){
-//             return false;
-//         }
-//     }
-//     return true;
+#include "Point.h"
+#include "ArrayValidation.h"
 
-// }
+template<typename T> bool validateArray(const  std::shared_ptr<Point<T>> points1,const  std::shared_ptr<Point<T>> points2, const int size){
+    for (int i = 0; i < size; ++i){
+        if (points1.get()[i] != points2.get()[i]){
+            return false;
+        }
+    }
+    return true;
+
+}
 
 // bool validateFiguresInArray(const FigureList list, const std::vector<std::string> expectedFigures){
 //     if (list.getSize() != expectedFigures.size()){

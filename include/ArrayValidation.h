@@ -1,6 +1,8 @@
-// #pragma once
-// #include "Point.h"
-// #include "FigureList.h"
-// #include <vector>
-// bool validateArray(const Point* points1,const Point* points2, const int size);
+#pragma once
+#include "Point.h"
+#include "FigureList.h"
+#include <vector>
+
+template<typename T>
+bool validateArray(const std::shared_ptr<Point<T>> points1,const  std::shared_ptr<Point<T>> points2, const int size);
 // bool validateFiguresInArray(const FigureList list, const std::vector<std::string> expectedFigures);

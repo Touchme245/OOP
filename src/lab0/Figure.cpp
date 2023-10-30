@@ -1,33 +1,34 @@
 #include "Figure.h"
+#include "NumberConcept.h"
 
-template <class T> Figure<T>::Figure(std::string figureName){
+template <Number T> Figure<T>::Figure(std::string figureName){
     this->figureName = figureName;
 }
 
-template <class T> Figure<T>::~Figure(){
-    figureName = "";
+template <Number T> Figure<T>::~Figure(){
+    this->figureName = "";
     // delete[] points;
     // points = nullptr;
 
 }
 
-template <class T> Figure<T>::Figure(){
-    figureName = "";
-    points = nullptr;
+template <Number T> Figure<T>::Figure(){
+    this->figureName = "";
+    this->points = nullptr;
 }
 
-template <class T> std::shared_ptr<Point<T>> Figure<T>::getPoints() const{
-    return points;
+template <Number T> std::shared_ptr<Point<T>> Figure<T>::getPoints() const{
+    return this->points;
 }
 
-template <class T> std::string Figure<T>::getFigureName() const{
-    return figureName;
+template <Number T> std::string Figure<T>::getFigureName() const{
+    return this->figureName;
 }
 
-template<class T> std::ostream& operator<<(std::ostream& os, const Figure<T>& figure){
+template<Number T> std::ostream& operator<<(std::ostream& os, const Figure<T>& figure){
     return figure.print(os);
 }
-template< class T>std::istream& operator>>(std::istream& is, Figure<T>& figure){
+template< Number T>std::istream& operator>>(std::istream& is, Figure<T>& figure){
     return figure.read(is);
 }
 

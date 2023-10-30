@@ -4,44 +4,44 @@
 // #include <ValidationCompositor.h>
 
 
-template<class T> Trap<T>::Trap(){
+template<Number T> Trap<T>::Trap(){
     this->figureName = "Trap";
     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
 }
 //Figure*
-template<class T> Trap<T> Trap<T>::create(const std::shared_ptr<Point<T>> points){
+template<Number T> Trap<T> Trap<T>::create(const std::shared_ptr<Point<T>> points){
    //dynamic_cast<Figure*>
     return Trap<T>{points};
 }
 
 
-template<class T> Trap<T>::Trap(const std::shared_ptr<Point<T>> points){
+template<Number T> Trap<T>::Trap(const std::shared_ptr<Point<T>> points){
     this->figureName = "Trap";
     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
     for (int i = 0; i < 4; ++i){
         this->points.get()[i] = points.get()[i];
     }
 
-    // ValidationCompositor validator;
-    // validator.validate(dynamic_cast<Figure &>(*this));
+    ValidationCompositor<T> validator;
+    validator.validate(dynamic_cast<Figure<T> &>(*this));
 
 }
 
-template<class T> Trap<T>::Trap(const Trap<T>& other){
+template<Number T> Trap<T>::Trap(const Trap<T>& other){
     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
     for (int i = 0; i < 4; ++i){
         this->points.get()[i] = other.points.get()[i];
     }
 }
 
-template<class T> Trap<T>::Trap(Trap<T>&& other){
+template<Number T> Trap<T>::Trap(Trap<T>&& other){
     this->points = other.points;
 
     //delete[] other.points;
     //other.points = nullptr;
 }
 
-template<class T> Trap<T>& Trap<T>::operator=(const Trap<T>& other){
+template<Number T> Trap<T>& Trap<T>::operator=(const Trap<T>& other){
     this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
     for (int i = 0; i < 4; ++i){
         this->points.get()[i] = other.points.get()[i];
@@ -49,7 +49,7 @@ template<class T> Trap<T>& Trap<T>::operator=(const Trap<T>& other){
     return *this;
 }
 
-template<class T> Trap<T>& Trap<T>::operator=(Trap<T>&& other){
+template<Number T> Trap<T>& Trap<T>::operator=(Trap<T>&& other){
     this->points = other.points;
 
     //delete[] other.points;
@@ -58,7 +58,7 @@ template<class T> Trap<T>& Trap<T>::operator=(Trap<T>&& other){
     return *this;
 }
 
-template<class T> bool Trap<T>::operator==(const Trap<T>& other)const{
+template<Number T> bool Trap<T>::operator==(const Trap<T>& other)const{
     for (int i = 0; i < 4;++i){
         int flag = 0;
         for (int j = 0; j < 4; ++j){
@@ -82,7 +82,7 @@ template<class T> bool Trap<T>::operator==(const Trap<T>& other)const{
 //     }
 //     return true;
 // }
-template<class T> Figure<T>& Trap<T>::operator=(const Figure<T>&& other){
+template<Number T> Figure<T>& Trap<T>::operator=(const Figure<T>&& other){
     try{
         const Trap<T>&& other_trap = dynamic_cast<const Trap<T>&&>(other);
         return *this = other_trap;
@@ -93,7 +93,7 @@ template<class T> Figure<T>& Trap<T>::operator=(const Figure<T>&& other){
     }
     
 }
-template<class T>Figure<T>& Trap<T>::operator=(const Figure<T>& other){
+template<Number T>Figure<T>& Trap<T>::operator=(const Figure<T>& other){
     try{
         const Trap<T>& other_trap = dynamic_cast<const Trap<T>&>(other);
         return *this = other_trap;
@@ -104,7 +104,7 @@ template<class T>Figure<T>& Trap<T>::operator=(const Figure<T>& other){
     }
 }
 
-template<class T> bool Trap<T>::operator==(const Figure<T>& other){
+template<Number T> bool Trap<T>::operator==(const Figure<T>& other){
     try{
         const Trap<T>& other_trap = dynamic_cast<const Trap<T>&>(other);
         return *this== other_trap;
@@ -122,7 +122,7 @@ template<class T> bool Trap<T>::operator==(const Figure<T>& other){
 //     return points;
 // }
 
-template<class T> Point<T> Trap<T>::center()const{
+template<Number T> Point<T> Trap<T>::center()const{
     T Xsum = 0;
     T Ysum = 0;
     for(int i = 0; i < 4; ++i){
@@ -137,7 +137,7 @@ template<class T> Point<T> Trap<T>::center()const{
 
 }
 
-template<class T> Trap<T>::operator double() const{
+template<Number T> Trap<T>::operator double() const{
     T s = 0;
     for (int i = 0; i < 4; i++) {
         s += this->points.get()[i].getX() * this->points.get()[(i + 1) % 4].getY() - this->points.get()[i].getY() * this->points.get()[(i + 1) % 4].getX();
@@ -145,27 +145,27 @@ template<class T> Trap<T>::operator double() const{
     return fabs(s / 2);
 }
 
-template<class T> void Trap<T>::fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data){
+template<Number T> void Trap<T>::fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data){
      for (int i = 0; i < pointsAmount; ++ i){
         res[i] = data[i];
     }
 }
 
-template<typename T> std::ostream& operator<<(std::ostream& os, const Trap<T>& figure){
+template<Number T> std::ostream& operator<<(std::ostream& os, const Trap<T>& figure){
     return figure.print(std::cout);
 }
 
-template<typename T> std::istream& operator>>(std::istream& is, Trap<T>& figure){
+template<Number T> std::istream& operator>>(std::istream& is, Trap<T>& figure){
     return figure.read(std::cin);
 }
 
-template<typename T> std::ostream& Trap<T>::print(std::ostream& os) const{
+template<Number T> std::ostream& Trap<T>::print(std::ostream& os) const{
     for (int i = 0; i < 4; ++i){
         os << this->points.get()[i] << "\n";
     }
     return os;
 }
-template<typename T> std::istream& Trap<T>::read(std::istream& is){
+template<Number T> std::istream& Trap<T>::read(std::istream& is){
     for (int i = 0; i < 4; ++i){
         is >> this->points.get()[i];
     }

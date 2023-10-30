@@ -2,7 +2,7 @@
 #include "Pentagon.h"
 #include "Figure.h"
 
-const double EPS = 1e-9;
+// const double EPS = 1e-9;
 
 template<class T> bool PentagonValidationHandler<T>::isAllowed(const Figure<T>& fugure) const {
     try {
@@ -15,7 +15,7 @@ template<class T> bool PentagonValidationHandler<T>::isAllowed(const Figure<T>& 
 
 template<class T> void PentagonValidationHandler<T>::validate(const Figure<T>& figure) const {
     for (int i = 0; i < 5; i++) {
-        if (abs(figure.getPoints().get()[(i + 1) % 4] - figure.getPoints().get()[i]) <= EPS) {
+        if (abs(figure.getPoints().get()[(i + 1) % 4] - figure.getPoints().get()[i]) <= 1e-9) {
             throw std::invalid_argument("The side with 0 length found(");
         }
     }

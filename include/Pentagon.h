@@ -1,9 +1,10 @@
 #pragma once
 #include "Figure.h"
+#include "NumberConcept.h"
 
-template<class T> class Pentagon : public Figure<T>{
-    template <class U> friend std::ostream& operator<<(std::ostream& os, const Pentagon<U>& figure);
-    template<class U> friend std::istream& operator>>(std::istream& is, Pentagon<U>& figure);
+template<Number T> class Pentagon : public Figure<T>{
+    template <Number U> friend std::ostream& operator<<(std::ostream& os, const Pentagon<U>& figure);
+    template<Number U> friend std::istream& operator>>(std::istream& is, Pentagon<U>& figure);
     public:
         Pentagon();
         Pentagon(const std::shared_ptr<Point<T>> points);
@@ -34,7 +35,7 @@ template<class T> class Pentagon : public Figure<T>{
         // std::string figureName = "Pentagon";
         void fillPoints(const int pointsAmount,Point<T>* res,const Point<T>* data) override;
 };
-template<typename T>
+template<Number T>
 std::ostream& operator<<(std::ostream& os, const Pentagon<T>& figure);
-template<typename T>
+template<Number T>
 std::istream& operator>>(std::istream& is, Pentagon<T>& figure);

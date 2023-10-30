@@ -1,9 +1,10 @@
 #pragma once
 #include <iostream>
 #include <math.h>
-template<class T> class Point{
-    template<class U> friend std::ostream& operator<<(std::ostream& os, const Point<U>& p);
-    template<class U> friend std::istream& operator>>(std::istream& is, Point<U>& p);
+#include "NumberConcept.h"
+template<Number T> class Point{
+    template<Number U> friend std::ostream& operator<<(std::ostream& os, const Point<U>& p);
+    template<Number U> friend std::istream& operator>>(std::istream& is, Point<U>& p);
     public:
         Point() = default;
         Point(const T x, const T y);
@@ -26,17 +27,17 @@ template<class T> class Point{
         T x;
         T y;
 };
-template<typename T>
+template<Number T>
 std::ostream& operator<<(std::ostream& os, const Point<T>& p);
-template<typename T>
+template<Number T>
 std::istream& operator>>(std::istream& is, Point<T>& p);
-template<typename T>
+template<Number T>
 double dot(const Point<T>& p1, const Point<T>& p2);
-template<typename T>
+template<Number T>
 double abs(const Point<T>& p1);
-template<typename T>
+template<Number T>
 double cos(const Point<T>& p1, const Point<T>& p2);
-template<typename T>
+template<Number T>
 bool isParalel(const Point<T>& p1, const Point<T>& p2);
-template<typename T>
+template<Number T>
 Point<T> intersection(const Point<T>& p1, const Point<T>& p2);
