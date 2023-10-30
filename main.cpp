@@ -64,7 +64,7 @@ int main(){
 
    
 
-    FigureList<double> list;
+    // FigureList<double> list;
     
     // std::shared_ptr< std::shared_ptr<Figure<double>> > list;
     // FigureList< Figure<double>> list;
