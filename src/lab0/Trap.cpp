@@ -6,7 +6,7 @@
 
 template<Number T> Trap<T>::Trap(){
     this->figureName = "Trap";
-    this->points = std::shared_ptr<Point<T>>(new Point<T>[4]);
+    this->points = std::make_shared<Point<T>>(4);
 }
 //Figure*
 template<Number T> Trap<T> Trap<T>::create(const std::shared_ptr<Point<T>> points){

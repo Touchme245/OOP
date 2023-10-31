@@ -292,113 +292,71 @@ TEST(PentagonSquare, BasicAssertions) {
     EXPECT_DOUBLE_EQ(square, expectedSquare);
 }
 
-// TEST(FigureListPushBack, BasicAssertions) {
-//     // arrange 
-//     Point* TrapPoints = new Point[4];
-//     TrapPoints[0] = Point{0,0};
-//     TrapPoints[1] = Point{7,0};
-//     TrapPoints[2] = Point{2,3};
-//     TrapPoints[3] = Point{6,3};
 
 
-//     Point* Rombpoints = new Point[4];
-//     Rombpoints[0] = Point{0,0};
-//     Rombpoints[1] = Point{2,0};
-//     Rombpoints[2] = Point{2,2};
-//     Rombpoints[3] = Point{0,2};
+TEST(FigureListRemove, BasicAssertions) {
+    // arrange 
+    Point<double>* po = new Point<double>[4];
+    std::shared_ptr<Point<double>> TrapPoints = std::shared_ptr<Point<double>>(po);
+    TrapPoints.get()[0] = Point<double>{0,0};
+    TrapPoints.get()[1] = Point<double>{7,0};
+    TrapPoints.get()[2] = Point<double>{2,3};
+    TrapPoints.get()[3] = Point<double>{6,3};
 
-//     Point* PentagonPoints = new Point[5];
-//     PentagonPoints[0] = Point{0,0};
-//     PentagonPoints[1] = Point{2,0};
-//     PentagonPoints[2] = Point{22,4};
-//     PentagonPoints[3] = Point{3,12};
-//     PentagonPoints[4] = Point{5,8};
 
-//     std::vector<std::string> expectedFigures;
+    std::shared_ptr<Point<double>> RombPoints = std::shared_ptr<Point<double>>(new Point<double>[4]);
+    RombPoints.get()[0] = Point<double>{0,0};
+    RombPoints.get()[1] = Point<double>{2,0};
+    RombPoints.get()[2] = Point<double>{2,2};
+    RombPoints.get()[3] = Point<double>{0,2};
 
-//     expectedFigures.push_back("Pentagon");
-//     expectedFigures.push_back("Trap");
-//     expectedFigures.push_back("Romb");
+   std::shared_ptr<Point<double>> PentPoints = std::shared_ptr<Point<double>>(new Point<double>[5]);
+    PentPoints.get()[0] = Point<double>{0,0};
+    PentPoints.get()[1] = Point<double>{2,0};
+    PentPoints.get()[2] = Point<double>{22,2};
+    PentPoints.get()[3] = Point<double>{3,12};
+    PentPoints.get()[4] = Point<double>{5,8};
 
-//     Figure* pentagon = Pentagon::create(PentagonPoints);
+    std::vector<std::string> expectedFigures;
 
-//     FigureList list;
+    expectedFigures.push_back("Pentagon");
+    expectedFigures.push_back("Trap");
+    expectedFigures.push_back("Romb");
+
    
-//     // act
-    
-//     list.push_back(pentagon);
-//     list.push_back(dynamic_cast<Figure*>(new Trap(TrapPoints)));
-//     list.push_back(dynamic_cast<Figure*>(new Romb(Rombpoints)));
 
-//     bool res = validateFiguresInArray(list,expectedFigures);
-//     // assert
-    
-//    EXPECT_EQ(res, true);
-// }
+    FigureList<Figure<double>*> list;
 
-
-// TEST(FigureListRemove, BasicAssertions) {
-//     // arrange 
-//     Point* TrapPoints = new Point[4];
-//     TrapPoints[0] = Point{0,0};
-//     TrapPoints[1] = Point{7,0};
-//     TrapPoints[2] = Point{2,3};
-//     TrapPoints[3] = Point{6,3};
-
-
-//     Point* Rombpoints = new Point[4];
-//     Rombpoints[0] = Point{0,0};
-//     Rombpoints[1] = Point{2,0};
-//     Rombpoints[2] = Point{2,2};
-//     Rombpoints[3] = Point{0,2};
-
-//     Point* PentagonPoints = new Point[5];
-//     PentagonPoints[0] = Point{0,0};
-//     PentagonPoints[1] = Point{2,0};
-//     PentagonPoints[2] = Point{22,4};
-//     PentagonPoints[3] = Point{3,12};
-//     PentagonPoints[4] = Point{5,8};
-
-//     std::vector<std::string> expectedFigures;
-
-//     expectedFigures.push_back("Pentagon");
-//     expectedFigures.push_back("Trap");
-//     expectedFigures.push_back("Romb");
-
-//     Figure* pentagon = Pentagon::create(PentagonPoints);
-
-//     FigureList list;
-
-//     list.push_back(pentagon);
-//     list.push_back(dynamic_cast<Figure*>(new Trap(TrapPoints)));
-//     list.push_back(dynamic_cast<Figure*>(new Romb(Rombpoints)));
+    list.push_back(dynamic_cast<Figure<double>*>(new Trap(TrapPoints)));
+    list.push_back(dynamic_cast<Figure<double>*>(new Pentagon(PentPoints)));
+    list.push_back(dynamic_cast<Figure<double>*>(new Romb(RombPoints)));
    
-//     // act
+    // act
     
-//     list.remove(1);
+    list.remove(1);
     
 
-//     int res = list.getSize();
-//     // assert
+    int res = list.getSize();
+    // assert
     
-//    EXPECT_EQ(res, 2);
-// }
+   EXPECT_EQ(res, 2);
+}
 
-// TEST(FigureListIndBelowZero, BasicAssertions) {
-//     // arrange 
-//     FigureList list;
+TEST(FigureListIndBelowZero, BasicAssertions) {
+    // arrange 
+    FigureList<Figure<double>*> list;
 
-//     // assert
-//     EXPECT_THROW(list[-4];, std::invalid_argument);
+    // assert
+    EXPECT_THROW(list[-4];, std::invalid_argument);
 
-// }
+}
 
-// TEST(FigureListIndBiggerThanSize, BasicAssertions) {
-//     // arrange 
-//     FigureList list;
+TEST(FigureListIndBiggerThanSize, BasicAssertions) {
+    // arrange 
+    FigureList<Figure<double>*> list;
 
-//     // assert
-//     EXPECT_THROW(list[2];, std::invalid_argument);
+    // assert
+    EXPECT_THROW(list[2];, std::invalid_argument);
 
-// }
+}
 
