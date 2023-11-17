@@ -19,7 +19,7 @@ namespace mai
 
         allocator()
         {
-            this->capacity = 1000;
+            this->capacity = BLOCK_SIZE;
             this->memory.resize(this->capacity);
         }
 

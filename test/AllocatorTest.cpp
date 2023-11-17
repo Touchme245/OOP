@@ -3,9 +3,10 @@
 #include <map>
 TEST(UsingAllocatorWidthMap, BasicAssertions) {
     // arrange 
+     int n = 5;
     std::map<int, int, std::less<int>, mai::allocator<std::pair<const int, int>, 10>> map;
 
-    int n = 5;
+   
     int i = 1;
     // act
     for (int i = 1; i < n; ++i){
