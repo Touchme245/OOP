@@ -4,16 +4,9 @@
 #include "Dragon.h"
 #include "ConsoleWriter.h"
 #include "Observer.h"
+#include "memory"
+#include "UI.h"
 
 int main(){
-    DeathAgregator deathAgregator; 
-    //= new DeathAgregator();
-    Dragon* d1 = new Dragon({5,2});
-    ConsoleWriter* writer = new ConsoleWriter(); 
-
-
-    deathAgregator.subscribe(dynamic_cast<Observer* >(writer));
-
-    deathAgregator.notify(dynamic_cast<NPC* >(d1));
-    
+    UI::handleUserInput();
 }

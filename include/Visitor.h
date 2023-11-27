@@ -1,53 +1,54 @@
-// #pragma once
-// #include <iostream>
-// #include "NPC.h"
-// #include "Dragon.h"
-// #include "Knight.h"
-// #include "BlackKnight.h"
-// class Dragon : NPC{
+#pragma once
+#include "NPC.h"
 
-// };
+class Dragon;
+class Knight;
+class BlackKnight;
+class Sukuna;
 
 
-// class Visitor{
-//     public:
-//         bool visit(Dragon* attacker, NPC* defender){
-//             try{
-//                 Dragon* def = dynamic_cast<Dragon*>(defender);
-//                 // функция драки
-//                 return false;
-//             }
-//             catch(...){
-//                 std::cout << "\n";
-//             }
+class IVisitor {
+public:
+    virtual bool visit(const Dragon & dragon) = 0;
+    virtual bool visit(const Knight & knight) = 0;
+    virtual bool visit(const BlackKnight & black) = 0;
+    virtual bool visit(const Sukuna & sukuna) =0 ;
 
-//             try{
-//                 Knight* def = dynamic_cast<Knight*>(defender);
-//                 // функция драки
-//                 return true;
-//             }
-//             catch(...){
-//                 std::cout << "\n";
-//             }
+};
 
-//             try{
-//                 BlackKnight* def = dynamic_cast<BlackKnight*>(defender);
-//                 // функция драки
-//                 return true;
-//             }
-//             catch(...){
-//                 std::cout << "\n";
-//             }
 
-//             throw std::runtime_error("Unrecognised NPC joined the party");
+class DragonVisitor : public IVisitor {
+public:
+    bool visit(const Dragon & dragon) override;
+    bool visit(const Knight & knight) override;
+    bool visit(const BlackKnight & black) override;
+    bool visit(const Sukuna & sukuna) override;
 
-//         }
+};
 
-//     // bool visit(Knight attacker, NPC* defender){
-        
-//     // }
 
-//     // bool visit(BlackKnight attacker,  NPC* defender){
-        
-//     // }
-// };
+class KnightVisitor : public IVisitor {
+public:
+    bool visit(const Dragon & dragon) override;
+    bool visit(const Knight & knight) override;
+    bool visit(const BlackKnight & black) override;
+    bool visit(const Sukuna & sukuna) override;
+
+};
+
+
+class BlackKnightVisitor : public IVisitor {
+public:
+    bool visit(const Dragon & dragon) override;
+    bool visit(const Knight & knight) override;
+    bool visit(const BlackKnight & black) override;
+    bool visit(const Sukuna & sukuna) override;
+};
+
+class SukunaVisitor : public IVisitor {
+public:
+    bool visit(const Dragon & dragon) override;
+    bool visit(const Knight & knight) override;
+    bool visit(const BlackKnight & black) override;
+    bool visit(const Sukuna & sukuna) override;
+};

@@ -5,7 +5,7 @@ class BlackKnight : public NPC{
     public:
         BlackKnight();
         BlackKnight(Point p);
-        // bool accept(Visitor visitor);
+        bool accept(IVisitor & visitor) override;
 
     friend std::ostream &operator<<(std::ostream &os, BlackKnight &blackKnight);
 };

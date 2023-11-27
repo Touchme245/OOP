@@ -10,22 +10,32 @@ class NPCFabric{
     int fieldSizeY = 100;
     int NPCAmount = 3;
     public:
-        NPC* createNPC(NpcType type, double x, double y){
+        static NPC* createNPC(NpcType type, double x, double y){
+            Point coords{x,y};
             switch (type){
                 case DragonType:
-                    Dragon dragon = new Dragon({x % fieldSizeX, y % fieldSizeY});
+                {
+                    Dragon* dragon = new Dragon(coords);
                     return dynamic_cast<NPC*>(dragon);
                     break;
+                }
+                    
                 case KnightType:
-                    Knight knight = new Knight({x % fieldSizeX, y % fieldSizeY});
+                {
+                    Knight* knight = new Knight(coords);
                     return dynamic_cast<NPC*>(knight);
                     break;
+                }
+                    
                 case BlackKnightType:
-                    BlackKnight blackKnight = new BlackKnight({x % fieldSizeX, y % fieldSizeY});
+                {
+                    BlackKnight* blackKnight = new BlackKnight(coords);
                     return dynamic_cast<NPC*>(blackKnight);
                     break;
+                }
+                    
                 default:
                     break;
             }
         }
-}
+};

@@ -2,10 +2,12 @@
 
 BlackKnight::BlackKnight(){
     this->location = {0,0};
+    this->name = "BlackKnight";
 }
 
 BlackKnight::BlackKnight(Point p){
     this->location = p;
+    this->name = "BlackKnight";
 }
 
 std::ostream &operator<<(std::ostream &os, BlackKnight &blackKnight)
@@ -14,6 +16,6 @@ std::ostream &operator<<(std::ostream &os, BlackKnight &blackKnight)
     return os;
 }
 
-// void BlackKnight::accept(Visitor visitor){
-//     visitor.visit(*this);
-// }
+bool BlackKnight::accept(IVisitor &visitor) {
+    return visitor.visit(*this);
+}

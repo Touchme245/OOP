@@ -2,10 +2,12 @@
 
 Dragon::Dragon(){
     this->location = {0,0};
+    this->name = "Dragon";
 }
 
 Dragon::Dragon(Point p){
     this->location = p;
+    this->name = "Dragon";
 }
 
 std::ostream &operator<<(std::ostream &os, Dragon &dragon)
@@ -14,6 +16,6 @@ std::ostream &operator<<(std::ostream &os, Dragon &dragon)
     return os;
 }
 
-// bool Dragon::accept(Visitor visitor, NPC* defender){
-//     return visitor.visit(this, defender);
-// }
+bool Dragon::accept(IVisitor &visitor) {
+    return visitor.visit(*this);
+}

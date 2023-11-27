@@ -9,9 +9,9 @@ NPC::NPC(){
     this->location = {0, 0};   
 }
 
-bool NPC::isClose(const NPC &other, size_t distance) const
+bool NPC::isClose(const NPC* other, size_t distance) const
 {
-    if (std::pow(this->location.getX() - other.location.getX(), 2) + std::pow(this->location.getY() - other.location.getY(), 2) <= std::pow(distance, 2))
+    if (std::pow(this->location.getX() - other->location.getX(), 2) + std::pow(this->location.getY() - other->location.getY(), 2) <= std::pow(distance, 2))
         return true;
     else
         return false;
@@ -27,3 +27,6 @@ Point NPC::getLocation(){
     return this->location;
 }
 
+std::string NPC::getName() const {
+    return this->name;
+}
