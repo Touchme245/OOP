@@ -1,11 +1,18 @@
 #include <Visitor.h>
 
+
 bool DragonVisitor::visit(const Dragon& dragon){
     return false;
 }
 
 bool DragonVisitor::visit(const BlackKnight& black){
-    return true;
+    srand(time(nullptr));
+    int attack = std::rand() % 6;
+    int def = std::rand() % 6;
+    if (attack> def){
+        return true;
+    }
+    return false;
 }
 
 bool DragonVisitor::visit(const Knight& knight){
@@ -19,11 +26,23 @@ bool DragonVisitor::visit(const Sukuna& sukuna){
 }
 
 bool KnightVisitor::visit(const Dragon& dragon){
-    return true;
+    srand(time(nullptr));
+    int attack = std::rand() % 6;
+    int def = std::rand() % 6;
+    if (attack> def){
+        return true;
+    }
+    return false;
 }
 
 bool KnightVisitor::visit(const BlackKnight& black){
-    return true;
+    srand(time(nullptr));
+    int attack = std::rand() % 6;
+    int def = std::rand() % 6;
+    if (attack> def){
+        return true;
+    }
+    return false;
 }
 
 bool KnightVisitor::visit(const Knight& knight){
@@ -45,7 +64,13 @@ bool BlackKnightVisitor::visit(const BlackKnight& black){
 }
 
 bool BlackKnightVisitor::visit(const Knight& knight){
-    return true;
+    srand(time(nullptr));
+    int attack = std::rand() % 6;
+    int def = std::rand() % 6;
+    if (attack> def){
+        return true;
+    }
+    return false;
     
 }
 

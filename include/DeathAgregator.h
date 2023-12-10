@@ -4,6 +4,7 @@
 #include "NPC.h"
 #include "Observer.h"
 #include "Observable.h"
+#include "algorithm"
 
 class DeathAgregator : public Observable{
     private:
@@ -18,16 +19,7 @@ class DeathAgregator : public Observable{
             observers.push_back(obs);
         }
         void unSubscribe(Observer* obs){
-            int flag = 0;
-            for (int i =0; i < observers.size()-1; ++i){
-                if (observers[i] == obs){
-                    flag = 1;
-                }
-                if (flag){
-                    observers[i] = observers[i+1];
-                }
-            }
-            observers.resize(observers.size() -1);
+            observers.erase(std::find(observers.begin(), observers.end(),obs));
         }
        
 };

@@ -28,7 +28,7 @@ std::ostream &operator<<(std::ostream &os, NPC &npc)
 }
 
 Point NPC::getLocation(){
-    std::lock_guard<std::mutex> lck(this->mtx);
+    // std::lock_guard<std::mutex> lck(this->mtx);
     return this->location;
 }
 

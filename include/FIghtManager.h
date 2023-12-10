@@ -10,11 +10,15 @@
 
 using namespace std::chrono_literals;
 
-struct FightEvent
+typedef struct FightEvent
 {
+    // FightEvent(NPC* attacker, NPC* defender){
+    //     this->attacker = attacker;
+    //     this->defender = defender;
+    // }
     NPC* attacker;
     NPC* defender;
-};
+} FightEvent;
 
 class FightManager
 {
@@ -35,7 +39,7 @@ public:
         return instance;
     }
 
-    void add_event(FightEvent &&event)
+    void add_event(FightEvent event)
     {
         std::lock_guard<std::shared_mutex> lock(mtx);
         events.push(event);
@@ -53,6 +57,7 @@ public:
                     if (!events.empty())
                     {
                         event = events.back();
+                        //std::cout << "new " << event->attacker->getName() << " " << event->defender->getName() << "\n";
                         events.pop();
                     }
                 }
@@ -60,12 +65,13 @@ public:
                 if (event)
                 {
                     try
-                    {
+                    {   
+                        //std::cout << "work "<< event->attacker->getName() << " " << event->defender->getName() << "\n";
+                        // std::cout << "ril fight\n";
                         bool fightStatus = false;
-                        if (event->attacker->is_alive())     // no zombie fighting!
-                            if (event->defender->is_alive()) // already dead!
-                               
-                                if (event->attacker->getName() == "Dragon") {
+                        if (event->attacker->is_alive()){
+                            if (event->defender->is_alive()){
+                                 if (event->attacker->getName() == "Dragon") {
                                     fightStatus = event->defender->accept(dragonVisitor);
                                 } else if (event->attacker->getName() == "Knight") {
                                     fightStatus = event->defender->accept(knightVisitor);
@@ -76,17 +82,23 @@ public:
                                     fightStatus = event->defender->accept(sukunaVisitor);
                                 }
                                 if (fightStatus) {
+                                   // std::cout << "killing\n";
                                     event->defender->kill();
                                 }
+                            } 
+                               
+                        }     
+                            
                     }
                     catch (...)
                     {
-                        std::lock_guard<std::shared_mutex> lock(mtx);
-                        events.push(*event);
+                        std::cout <<"hueta\n";
+                        //std::lock_guard<std::shared_mutex> lock(mtx);
+                        //events.push(*event);
                     }
                 }
-                else
-                    std::this_thread::sleep_for(100ms);
+                //else
+                    // std::this_thread::sleep_for(100ms);
             }
         }
     }
