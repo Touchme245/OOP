@@ -6,6 +6,7 @@
 #include "Observer.h"
 #include "memory"
 #include "UI.h"
+#include <thread>
 
 int main(){
     UI::handleUserInput();

@@ -4,7 +4,12 @@ project(lab0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package (Threads REQUIRED)
+
+
 add_compile_options(-g -rdynamic)
+
+add_compile_options(-lpthread)
 
 add_subdirectory(lib/googletest)
 

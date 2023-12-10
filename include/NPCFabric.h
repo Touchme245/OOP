@@ -16,7 +16,7 @@ class NPCFabric{
                 case DragonType:
                 {
                     Dragon* dragon = new Dragon(coords);
-                    return dynamic_cast<NPC*>(dragon);
+                    return dragon;
                     break;
                 }
                     
@@ -35,7 +35,9 @@ class NPCFabric{
                 }
                     
                 default:
+                    throw std::runtime_error("Неопознанный тип NPC");
                     break;
+
             }
         }
 };

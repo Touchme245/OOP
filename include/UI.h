@@ -6,43 +6,13 @@
 #include "Visitor.h"
 #include "ConsoleWriter.h"
 #include "Sukuna.h"
+#include <thread>
+#include <pthread.h>
+#include "FIghtManager.h"
+
 #define WIGHT 500
 #define HIGH 500
-
-
-std::set<NPC*>  fight(const std::set<NPC*> &alive, int distance ){
-    std::set<NPC*> deathNote;
-    
-    DragonVisitor dragonVisitor;
-    KnightVisitor knightVisitor;
-    BlackKnightVisitor blackVisitor;
-    SukunaVisitor sukunaVisitor;
-    
-    for (const auto & attacker : alive) {
-        for (const auto & defender : alive) {
-            if (attacker != defender && attacker->isClose(defender, distance)) {
-                bool fightStatus;
-                if (attacker->getName() == "Dragon") {
-                    fightStatus = defender->accept(dragonVisitor);
-                } else if (attacker->getName() == "Knight") {
-                    fightStatus = defender->accept(knightVisitor);
-                } else if (attacker->getName() == "BlackKnight"){
-                    fightStatus = defender->accept(blackVisitor);
-                }
-                else{
-                    fightStatus = defender->accept(sukunaVisitor);
-                }
-                if (fightStatus) {
-                    deathNote.insert(defender);
-                }
-            }
-        }
-    }
-
-    return deathNote;
-}
-
-
+std::mutex print_mutex;
 
 class UI{
     public:
@@ -69,17 +39,82 @@ class UI{
 
             }
 
-            for (int distance = 20; (distance <= std::max(WIGHT, HIGH) && !alive.empty()); distance+=10){
-                std::set<NPC*> deathNote = fight(alive,distance);
-                for (NPC * dead : deathNote){
-                    deathAgregator.notify(dead);
-                    alive.erase(dead);
+          
+            std::thread fight_thread(std::ref(FightManager::get()));
+
+            
+            // std::thread move_thread([&alive]()
+            //                 {
+            // while (true){
+            //     // move phase
+            //     for (NPC* npc : alive){
+            //             if(npc->is_alive()){
+            //                 int shift_x = std::rand() % 20 - 10;
+            //                 int shift_y = std::rand() % 20 - 10;
+            //                 npc->move(shift_x, shift_y, HIGH, WIGHT);
+            //             }
+            //     }
+            //     // lets fight
+            //     for (NPC* npc : alive)
+            //         for (NPC* other : alive)
+            //             if (other != npc)
+            //                 if (npc->is_alive())
+            //                 if (other->is_alive())
+            //                 if (npc->isClose(other, npc->getKillDistance()))
+            //                     FightManager::get().add_event({npc, other});
+
+            //     std::this_thread::sleep_for(1s);
+            // } });
+
+    while (true){
+        const int grid{20}, step_x{HIGH / grid}, step_y{WIGHT / grid};
+        {
+            std::array<char, grid * grid> fields{0};
+            for (NPC* npc : alive){
+                Point p = npc->getLocation();
+                int i = p.getX() / step_x;
+                int j = p.getY() / step_y;
+                if (npc->is_alive()){
+                    std::string name = npc->getName();
+                    if (name == "Dragon"){
+                        fields[i + grid * j] = 'D';
+                    }
+                    else if (name == "Knight"){
+                        fields[i + grid * j] = 'K';
+                    }
+                    else if (name == "BlackKnight"){
+                        fields[i + grid * j] = 'B';
+                    }
+                    else if (name == "Sukuna"){
+                        fields[i+ grid * j] = 'S';
+                    }
                 }
-            }
-            std::cout << "Игра окончена\n";
-            for (auto elem : alive){
-                std::cout << elem->getName() << " пережил мясорубку находясь в точке " << elem->getLocation() << "\n";
+                else{
+                    fields[i + grid * j] = '.';
+                }
+                
+                
             }
 
+            std::lock_guard<std::mutex> lck(print_mutex);
+            for (int j = 0; j < grid; ++j){
+                for (int i = 0; i < grid; ++i){
+                    char c = fields[i + j * grid];
+                    if (c != 0)
+                        std::cout << "[" << c << "]";
+                    else
+                        std::cout << "[ ]";
+                }
+                std::cout << std::endl;
+            }
+            std::cout << std::endl;
+        }
+        std::this_thread::sleep_for(1s);
+    };
+    
+           // move_thread.join();
+            //fight_thread.join();
+        
+        
     }
 };

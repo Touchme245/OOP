@@ -38,14 +38,10 @@ void Point::setY(double y){
 }
 
 Point Point::operator+(const Point& other){
-    // x += other.x;
-    // y += other.y;
     return Point(x + other.x, y + other.y);
 }
 
 Point Point::operator-(const Point& other){
-    // x -= other.x;
-    // y -= other.y;
     return Point(x - other.x, y - other.y);
 }
 
